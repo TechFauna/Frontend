@@ -1,23 +1,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/login.js';
-import Register from './components/register.js';
-import Home from './components/home.js';
-import './App.css';
+import login from './components/login';
+import register from './components/register';
+import home from './components/home';
+import './App.css';  // Importando o CSS globalmente
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<login />} />
+        <Route path="/login" element={<login />} />
+        <Route path="/register" element={<register />} />
+        <Route path="/home" element={<home />} />
       </Routes>
     </Router>
-
-  
   );
-}
+};
 
 export default App;
+
