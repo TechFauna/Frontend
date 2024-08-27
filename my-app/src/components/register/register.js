@@ -1,49 +1,24 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaUserPlus } from 'react-icons/fa';
+//import React, { useState } from 'react';
+//import { useNavigate } from 'react-router-dom';
+//import { FaEnvelope, FaLock, FaUserPlus } from 'react-icons/fa';
 import './register.css';
 
 
 const Register = () => { 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    console.log('Novo usuário registrado:', email, password);
-    navigate('/login');
-  };
-
-  return (
-    <div className="container">
-      <h2>Registro - FaunaTech</h2>
-      <form onSubmit={handleRegister}>
-        <div>
-          <FaEnvelope className="icon" />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+  <div className='Bigbox'>
+        <div className='info-login'>
+            <input className='login-txt' placeholder='Login'></input>
         </div>
-        <div>
-          <FaLock className="icon" />
-          <input
-            type="password"
-            placeholder="Senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <div className='info-password'>
+            <input className='password-txt' placeholder='password'></input>
         </div>
-        <button type="submit">
-          <FaUserPlus className="icon" /> Registrar
-        </button>
-      </form>
-      <a onClick={() => navigate('/login')}>Já tenho uma conta</a>
+        <div className='email'>
+            <input className='email-txt' placeholder='email'></input>
+        </div>
+        <div className='info-button'>
+            <button className='btn-login'>Register</button>
+        </div>
     </div>
-  );
 };
 
 export default Register;
