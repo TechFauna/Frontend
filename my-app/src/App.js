@@ -1,23 +1,18 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Login } from './components/login/login';
-import Register from './components/register/register';
-import Home from './components/home/home';
-import './App.css'; 
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Recintos from './pages/Recintos';
 
-
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/recintos" element={<Recintos />} />
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
-
