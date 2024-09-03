@@ -5,7 +5,10 @@ function Recintos() {
   return (
     <div className="recintos-container">
       <h1>Página de Recintos</h1>
-      <p>Controle de recintos e animais.</p>
+      <div className="crud-box">
+        <p>Controle de recintos e animais.</p>
+        {/* Future CRUD functionality will be added here */}
+      </div>
     </div>
   );
 }

@@ -1,14 +1,16 @@
 .recintos-container {
-    padding: 20px;
-    background-color: #e0ffe0;
-    text-align: center;
-  }
-  
-  h1 {
-    color: #228b22;
-  }
-  
-  p {
-    font-size: 16px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.crud-box {
+  width: 300px;
+  height: 300px;
+  border: 2px solid #2e8b57;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
