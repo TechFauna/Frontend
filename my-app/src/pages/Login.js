@@ -39,7 +39,6 @@ const Login = () => {
         data: {
           name,
           surname,
-          birthdate,
         },
       },
     });
@@ -99,15 +98,6 @@ const Login = () => {
               type="text"
               value={surname}
               onChange={(e) => setSurname(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Data de nascimento:</label>
-            <input
-              type="date"
-              value={birthdate}
-              onChange={(e) => setBirthdate(e.target.value)}
               required
             />
           </div>

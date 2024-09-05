@@ -11,6 +11,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/recintos" element={<Recintos />} />
+
+
+
+
+
+        
       </Routes>
     </Router>
   );
