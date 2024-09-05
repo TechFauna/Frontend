@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseCliente';
 import './Login.css';
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const Login = () => {
   // Estado para os campos de cadastro
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  //const [birthdate, setBirthdate] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,7 +40,6 @@ const Login = () => {
         data: {
           name,
           surname,
-          birthdate,
         },
       },
     });
@@ -48,6 +48,7 @@ const Login = () => {
       setError(error.message);
     } else {
       console.log('Usuário registrado com sucesso:', data);
+      Navigate('/recintos');
       // Redirecionar para outra página ou tratar o cadastro com sucesso
     }
   };
