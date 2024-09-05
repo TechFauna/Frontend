@@ -2,60 +2,47 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
-}
-
-.crud-box {
-  width: 800px;
-  border: 2px solid #2e8b57;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 8px;
   padding: 20px;
 }
 
-.recintos-list {
-  list-style: none;
-  padding: 0;
+.crud-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
+  margin-bottom: 20px;
+}
+
+.recintos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-.recinto-item {
-  display: flex;
-  align-items: center;
+.recinto-card {
   border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recinto-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
 
 .recinto-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex-grow: 1;
+  margin-bottom: 10px;
 }
 
-.recinto-info img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.recinto-info div {
-  display: flex;
-  flex-direction: column;
-}
-
-.recinto-item button {
-  background-color: #dc3545;
+.recinto-card button {
+  background-color: #dc3545; /* Vermelho */
   color: white;
-  padding: 8px 16px;
+  padding: 8px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
 }

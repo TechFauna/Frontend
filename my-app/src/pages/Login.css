@@ -66,7 +66,7 @@ label {
 
 /* Exibição de erro */
 p {
-  color: red;
+  color: rgb(255, 0, 0);
   margin-top: 10px;
   font-size: 0.9rem;
 }

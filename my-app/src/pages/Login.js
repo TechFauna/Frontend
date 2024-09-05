@@ -21,7 +21,7 @@ const Login = () => {
     } else {
       console.log('Usuário logado com sucesso:', data);
       //adicionar para usuario ir para o seu recinto apos o login bem sucedido
-      // Redirecionar para outra página ou tratar o login com sucesso
+      //Redirecionar para outra página ou tratar o login com sucesso
     }
   };
 

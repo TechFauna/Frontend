@@ -10,7 +10,7 @@ function Home() {
         <a href="/login">Login</a>
         <a href="/recintos">Recintos</a>
       </nav>
-      <p>Esta é a página inicial do site.</p>
+      <h4>Esta é a página inicial do site.</h4>
     </div>
   );
 }
