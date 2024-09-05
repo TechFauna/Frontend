@@ -103,15 +103,6 @@ const Login = () => {
             />
           </div>
           <div>
-            <label>Data de nascimento:</label>
-            <input
-              type="date"
-              value={birthdate}
-              onChange={(e) => setBirthdate(e.target.value)}
-              required
-            />
-          </div>
-          <div>
             <label>Email:</label>
             <input
               type="email"
