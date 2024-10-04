@@ -1,135 +1,79 @@
 import React, { useState } from 'react';
-import { supabase } from '../supabaseCliente';
+import { useNavigate } from 'react-router-dom'; // Importa o hook de navegação
 import './Login.css';
-import { Navigate } from 'react-router-dom';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
-  
-  // Estado para os campos de cadastro
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  //const [birthdate, setBirthdate] = useState('');
+  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Inicializa o hook para navegação
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const name = isRegistering ? e.target.name.value : null;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      console.log('Usuário logado com sucesso:', data);
-      // Redirecionar para outra página ou tratar o login com sucesso
+    let newErrors = {};
+    if (isRegistering && !name) {
+      newErrors.name = "Nome é obrigatório.";
     }
-  };
+    if (!email) {
+      newErrors.email = "Email é obrigatório.";
+    }
+    if (!password) {
+      newErrors.password = "Senha é obrigatória.";
+    }
+    setErrors(newErrors);
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const url = isRegistering ? "http://localhost:5000/register" : "http://localhost:5000/login";
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name,
-          surname,
-        },
-      },
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      console.log('Usuário registrado com sucesso:', data);
-      Navigate('/recintos');
-      // Redirecionar para outra página ou tratar o cadastro com sucesso
+        const data = await response.json();
+        if (isRegistering) {
+          alert("Registrado com sucesso!");
+          setIsRegistering(false); // Voltar para a tela de login
+        } else {
+          if (data.message === "Login efetuado com sucesso!") {
+            navigate("/home"); // Redireciona para a Home se o login for bem-sucedido
+          } else {
+            setMessage(data.message);
+          }
+        }
+      } catch (error) {
+        console.error("Erro ao conectar com o backend", error);
+      }
     }
   };
 
   return (
     <div className="login-register-container">
-      {!isRegistering ? (
-        <form onSubmit={handleLogin} className="login-form">
-          <h2>Entrar</h2>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Senha:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          {error && <p>{error}</p>}
-          <button type="submit">Entrar</button>
-          <p onClick={() => setIsRegistering(true)} className="switch-form">
-            Não tem uma conta? Cadastre-se aqui
-          </p>
-        </form>
-      ) : (
-        <form onSubmit={handleRegister} className="register-form">
-          <h2>Cadastrar</h2>
-          <div>
-            <label>Nome:</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Sobrenome:</label>
-            <input
-              type="text"
-              value={surname}
-              onChange={(e) => setSurname(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Senha:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>  
-          {error && <p>{error}</p>}
-          <button type="submit">Cadastrar</button>
-          <p onClick={() => setIsRegistering(false)} className="switch-form">
-            Já tem uma conta? Entre aqui
-          </p>
-        </form>
-      )}
+      <h2>{isRegistering ? "Registrar" : "Login"}</h2>
+      <form onSubmit={handleSubmit}>
+        {isRegistering && (
+          <>
+            <input type="text" name="name" placeholder="Nome" className={errors.name ? 'error' : ''} />
+            {errors.name && <p className="error-message">{errors.name}</p>}
+          </>
+        )}
+        <input type="email" name="email" placeholder="Email" className={errors.email ? 'error' : ''} />
+        {errors.email && <p className="error-message">{errors.email}</p>}
+        <input type="password" name="password" placeholder="Senha" className={errors.password ? 'error' : ''} />
+        {errors.password && <p className="error-message">{errors.password}</p>}
+        <button type="submit">{isRegistering ? "Registrar" : "Entrar"}</button>
+        {message && <p>{message}</p>}
+      </form>
+      <p onClick={() => setIsRegistering(!isRegistering)} className="switch-form">
+        {isRegistering ? "Já tem conta? Faça login" : "Não tem conta? Registre-se"}
+      </p>
     </div>
   );
-};
+}
 
 export default Login;
