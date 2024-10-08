@@ -1,5 +1,5 @@
 .login-register-container {
-  background: linear-gradient(to bottom right, #4A90E2, #9013FE);
+  background: linear-gradient(to bottom right, #042143, #0a7d11);
   padding: 50px;
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -35,7 +35,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #f39c12;
+  border-color: #f3c612;
 }
 
 button {

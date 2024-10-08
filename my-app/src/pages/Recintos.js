@@ -1,118 +1,93 @@
-import React, { useState } from 'react';
-import './Recintos.css'; // Arquivo CSS para estilização
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './Recintos.css';
 
 function Recintos() {
-  const [recintos, setRecintos] = useState([
-    // Dados iniciais dos recintos
-    {
-      nome: 'LuSol',
-      especie: 'Araras',
-      recintos: 12,
-      animais: 24,
-      imagem: 'https://picsum.photos/200/100', // Substitua por uma URL de imagem real
-    },
-    // Adicione mais recintos aqui
-  ]);
+  const [recintos, setRecintos] = useState([]);
+  const [nome, setNome] = useState('');
+  const [especie, setEspecie] = useState('');
+  const [quantRecintos, setQuantRecintos] = useState('');
+  const [animais, setAnimais] = useState('');
 
-  const handleAddRecinto = () => {
-    // Lógica para adicionar um novo recinto
-    // Ex: 
-    setRecintos([
-      ...recintos,
-      {
-        nome: 'Novo Recinto',
-        especie: 'Espécie',
-        recintos: 0,
-        animais: 0,
-        imagem: 'https://picsum.photos/200/100', 
+  // Buscar todos os recintos no carregamento inicial
+  useEffect(() => {
+    const fetchRecintos = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/recintos');
+        setRecintos(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar recintos:', error);
       }
-    ]);
-  };
+    };
 
-  const handleDeleteRecinto = (index) => {
-    const updatedRecintos = [...recintos];
-    updatedRecintos.splice(index, 1);
-    setRecintos(updatedRecintos);
-  };
+    fetchRecintos();
+  }, []);
 
-  const handleEditRecinto = (index, updatedRecinto) => {
-    const updatedRecintos = [...recintos];
-    updatedRecintos[index] = updatedRecinto;
-    setRecintos(updatedRecintos);
-  };
+  // Adicionar um novo recinto
+  const handleAddRecinto = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/recintos', {
+        nome,
+        especie,
+        recintos: quantRecintos,
+        animais,
+      });
 
-  const [editingRecinto, setEditingRecinto] = useState(null);
+      setRecintos([...recintos, response.data.data[0]]); // Adicionar novo recinto ao estado
+      setNome('');
+      setEspecie('');
+      setQuantRecintos('');
+      setAnimais('');
+    } catch (error) {
+      console.error('Erro ao adicionar recinto:', error);
+    }
+  };
 
   return (
     <div className="recintos-container">
       <h1>Página de Recintos</h1>
-      <div className="crud-box">
-        <button onClick={handleAddRecinto}>Adicionar Recinto</button>
-        <div className="recintos-grid">
-          {recintos.map((recinto, index) => (
-            <div key={index} className="recinto-card">
-              {editingRecinto === index ? (
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    const formData = new FormData(event.target);
-                    const updatedRecinto = {
-                      nome: formData.get('nome'),
-                      especie: formData.get('especie'),
-                      recintos: parseInt(formData.get('recintos'), 10),
-                      animais: parseInt(formData.get('animais'), 10),
-                      imagem: recinto.imagem,
-                    };
-                    handleEditRecinto(index, updatedRecinto);
-                    setEditingRecinto(null);
-                  }}
-                >
-                  <input
-                    type="text"
-                    name="nome"
-                    defaultValue={recinto.nome}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="especie"
-                    defaultValue={recinto.especie}
-                    required
-                  />
-                  <input
-                    type="number"
-                    name="recintos"
-                    defaultValue={recinto.recintos}
-                    required
-                  />
-                  <input
-                    type="number"
-                    name="animais"
-                    defaultValue={recinto.animais}
-                    required
-                  />
-                  <button type="submit">Salvar</button>
-                </form>
-              ) : (
-                <>
-                  <img src={recinto.imagem} alt={recinto.nome} />
-                  <div className="recinto-info">
-                    <h3>{recinto.nome}</h3>
-                    <p>Espécie: {recinto.especie}</p>
-                    <p>Recintos: {recinto.recintos}</p>
-                    <p>Animais: {recinto.animais}</p>
-                  </div>
-                  <button onClick={() => handleDeleteRecinto(index)}>
-                    Excluir
-                  </button>
-                  <button onClick={() => setEditingRecinto(index)}>
-                    Editar
-                  </button>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
+      <form onSubmit={handleAddRecinto} className="add-recinto-form">
+        <input
+          type="text"
+          placeholder="Nome do Recinto"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Espécie"
+          value={especie}
+          onChange={(e) => setEspecie(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Quantidade de Recintos"
+          value={quantRecintos}
+          onChange={(e) => setQuantRecintos(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Quantidade de Animais"
+          value={animais}
+          onChange={(e) => setAnimais(e.target.value)}
+          required
+        />
+        <button type="submit">Adicionar Recinto</button>
+      </form>
+
+      <div className="recintos-grid">
+        {recintos.map((recinto, index) => (
+          <div key={index} className="recinto-card">
+            <h3>{recinto.nome}</h3>
+            <p>Espécie: {recinto.especie}</p>
+            <p>Recintos: {recinto.recintos}</p>
+            <p>Animais: {recinto.animais}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
