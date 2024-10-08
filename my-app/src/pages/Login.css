@@ -1,19 +1,20 @@
-/* Estilos para o contêiner principal */
 .login-register-container {
-  background-color: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: linear-gradient(to bottom right, #042143, #0a7d11);
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
+  width: 90%;
+  margin: 50px auto;
   text-align: center;
+  color: #ffffff;
 }
 
-/* Estilos para os formulários de login e cadastro */
+h2 {
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -21,59 +22,41 @@ form {
   width: 100%;
 }
 
-.login-form, .register-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-h2 {
-  margin-bottom: 20px;
-}
-
-/* Estilos para os inputs */
 input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #f3c612;
 }
 
 button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #f39c12;
+  color: #ffffff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #d35400;
 }
 
-/* Link para alternar entre login e registro */
 .switch-form {
-  margin-top: 10px;
+  margin-top: 15px;
   cursor: pointer;
-  color: #4CAF50;
-  font-size: 0.9rem;
-}
-
-.switch-form:hover {
+  color: #ffeb3b;
+  font-size: 1rem;
   text-decoration: underline;
-}
-
-p {
-  color: red;
 }

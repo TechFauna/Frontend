@@ -3,27 +3,27 @@ import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', { email, password });
+      const response = await axios.post('http://localhost:5000/register', { email, password });
       alert(response.data.message);
-      navigate('/recintos'); // Redirecionar para a página de Recintos após o login
+      navigate('/login'); // Redirecionar para a página de Login após o registro
     } catch (error) {
-      setError(error.response?.data?.message || 'Error during login');
+      setError(error.response?.data?.message || 'Error during registration');
     }
   };
 
   return (
     <div className="login-register-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <h2>Entrar</h2>
+      <form onSubmit={handleRegister} className="register-form">
+        <h2>Cadastrar</h2>
         <div>
           <label>Email:</label>
           <input
@@ -43,10 +43,10 @@ const Login = () => {
           />
         </div>
         {error && <p>{error}</p>}
-        <button type="submit">Entrar</button>
+        <button type="submit">Cadastrar</button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

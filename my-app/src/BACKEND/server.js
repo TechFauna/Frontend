@@ -1,52 +1,81 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// Atualização do servidor com validação usando Node.js, Express e Supabase
+const express = require('express');
+const cors = require('cors');
+const { createClient } = require('@supabase/supabase-js');
+const app = express();
 
-// Função para registrar o usuário
-const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+app.use(cors());
+app.use(express.json());
 
-  // Criptografar a senha
-  const hashedPassword = await bcrypt.hash(password, 10);
+// Inicializar o cliente Supabase
+const supabaseUrl = 'https://hblarpwdedgzbkigddvy.supabase.co'; // Substitua pela sua URL do Supabase
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhibGFycHdkZWRnemJraWdkZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgzNjMwMjQsImV4cCI6MjA0MzkzOTAyNH0.JRmP9joPy3YSIga3vTDDPANwUwZOIfqpxsurjRvIa-A'; 
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // Salvar usuário no banco de dados
-  const user = await db.User.create({
-    name,
-    email,
-    password: hashedPassword,
-  });
+const users = []; // Simples armazenamento de usuários
 
-  res.json({ message: 'Usuário registrado com sucesso!' });
+// Função para validar email
+const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
 };
 
-// Função para autenticar o usuário
-const loginUser = async (req, res) => {
+// Rota de Registro
+app.post('/register', (req, res) => {
   const { email, password } = req.body;
 
-  const user = await db.User.findOne({ where: { email } });
+  if (!validateEmail(email)) {
+    return res.status(400).json({ message: 'Email address is not valid' });
+  }
+
+  // Verificar se o usuário já existe
+  const userExists = users.find((user) => user.email === email);
+  if (userExists) {
+    return res.status(400).json({ message: 'Email already registered' });
+  }
+
+  users.push({ email, password });
+  console.log(users); // Verificar armazenamento de usuários
+  return res.status(201).json({ message: 'User registered successfully' });
+});
+
+// Rota de Login
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!validateEmail(email)) {
+    return res.status(400).json({ message: 'Email address is not valid' });
+  }
+
+  const user = users.find((user) => user.email === email && user.password === password);
   if (!user) {
-    return res.status(401).json({ message: 'Credenciais inválidas' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  // Verificar senha
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Credenciais inválidas' });
+  return res.status(200).json({ message: 'Login successful' });
+});
+
+// Rota para criar Recinto e armazenar no Supabase
+app.post('/recintos', async (req, res) => {
+  const { nome, especie, recintos, animais } = req.body;
+
+  try {
+    const { data, error } = await supabase
+      .from('recintos')
+      .insert([{ nome, especie, recintos, animais }]);
+
+    if (error) {
+      throw error;
+    }
+
+    return res.status(201).json({ message: 'Recinto created successfully', data });
+  } catch (error) {
+    console.error('Error inserting recinto:', error);
+    return res.status(500).json({ message: 'Error creating recinto', error: error.message });
   }
+});
 
-  // Gerar token JWT
-  const token = jwt.sign({ userId: user.id }, 'seu_segredo', { expiresIn: '1h' });
-    
-  res.json({ token });
-};
-
-const authenticateToken = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (!token) return res.sendStatus(403);
-  
-    jwt.verify(token, 'seu_segredo', (err, user) => {
-      if (err) return res.sendStatus(403);
-      req.user = user;
-      next();
-    });
-  };
-  
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
