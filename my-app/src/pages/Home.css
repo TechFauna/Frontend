@@ -1,18 +1,90 @@
 .home-container {
   text-align: center;
-  margin-top: 50px;
+  position: relative;
+  background-image: url('../images/backgroundimage2.png');
+  background-size: cover;
+  background-position: flex;
+  height: 100vh;
+  color: #ffffff;
 }
 
-nav a {
-  margin: 0 15px;
+.menu-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #2e8b57;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: -200px;
+  width: 200px;
+  height: 100vh;
+  background-color: rgba(46, 139, 87, 0.9);
+  transition: left 0.3s ease;
+  padding-top: 50px;
+}
+
+.sidebar.visible {
+  left: 0;
+}
+
+.sidebar nav a {
+  display: block;
+  color: #ffffff;
   text-decoration: none;
-  color: #2e8b57;
+  padding: 10px;
+  margin: 5px 0;
 }
 
-nav a:hover {
-  color: #1c5a3b;
+.sidebar nav a:hover {
+  background-color: #1c5a3b;
 }
 
-.h2 {
-  color: #00ff80;
+.content {
+  margin-top: 100px;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.card.active {
+  transform: scale(1.05);
+}
+
+.card:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.card p {
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
