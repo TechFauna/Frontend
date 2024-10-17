@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Recintos from './pages/Recintos';
 import RecintoView from './pages/RecintoView';
+import SpeciesControl from './pages/SpeciesControl';
+
 import './App.css';
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
             <Link to="/login">Login</Link>
             <Link to="/register">Registrar</Link>
             <Link to="/recintos">Recintos</Link>
+            <Link to="/species-control">Espécies</Link>
           </nav>
         </header>
         
@@ -30,7 +33,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/recintos" element={<Recintos />} />
             <Route path="/recintos/:id" element={<RecintoView />} />
-            <Route path="/home-user" element={<HomeUser />} /> {/* Nova rota para HomeUser */}
+            <Route path="/home-user" element={<HomeUser />} /> 
+            <Route path="/species-control" element={<SpeciesControl />} />
           </Routes>
         </div>
       </div>

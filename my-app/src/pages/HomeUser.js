@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './HomeUser.css'; // Adicione o CSS para estilizar os cards
+import './HomeUser.css';
 
 function HomeUser() {
   const [recintos, setRecintos] = useState([]);
 
-  // Pegando o id do usuário logado (supondo que esteja armazenado no localStorage ou Supabase)
+ 
   const id_user = localStorage.getItem('id_user') || 'default_user_id';
 
   useEffect(() => {

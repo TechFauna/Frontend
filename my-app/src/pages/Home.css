@@ -1,108 +1,112 @@
-.home-container {
+/* Centralizar o título */
+h1 {
   text-align: center;
-  position: relative;
-  background-image: url('../images/backgroundimage2.png');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  color: #ffffff;
+  font-size: 3em;
+  color: white;
 }
 
-.menu-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: #2e8b57;
-  color: #ffffff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.sidebar {
-  position: absolute;
-  top: 0;
-  left: -200px;
-  width: 200px;
-  height: 100vh;
-  background-color: rgba(46, 139, 87, 0.9);
-  transition: left 0.3s ease;
-  padding-top: 50px;
-}
-
-.sidebar.visible {
-  left: 0;
-}
-
-.sidebar nav a {
-  display: block;
-  color: #ffffff;
-  text-decoration: none;
-  padding: 10px;
-  margin: 5px 0;
-}
-
-.sidebar nav a:hover {
-  background-color: #1c5a3b;
-}
-
-.content {
-  margin-top: 100px;
-}
-
-.card-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
+/* Estilizar os cards */
 .card {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 80px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
   cursor: pointer;
-  width: 250px;
-  transition: transform 0.3s ease;
 }
 
 .card.active {
-  transform: scale(1.05);
+  background-color: rgba(0, 128, 0, 0.8); /* Card ativo com destaque */
+  color: white;
 }
 
-.card:hover {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+/* Menu lateral */
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: rgba(46, 139, 87, 0.9);
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  left: -200px; /* Oculto por padrão */
+  transition: left 0.3s;
 }
 
-.card h3 {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
+.sidebar.visible {
+  left: 0; /* Mostra o menu lateral */
 }
 
-.card p {
-  font-size: 1rem;
-}
-
-.auth-buttons {
-  margin-top: 20px;
-}
-
-.auth-button {
-  background-color: #2e8b57;
+/* Sidebar links */
+.sidebar a {
+  display: block;
   color: #ffffff;
-  padding: 10px 20px;
-  margin: 10px;
+  padding: 25px;
   text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
 }
 
-.auth-button:hover {
+/* Active/current link */
+.sidebar a.active {
+  background-color: #2e8b57;
+  color: white;
+}
+
+/* Links on hover */
+.sidebar a:hover:not(.active) {
+  background-color: #1c5a3b;
+  color: white;
+}
+
+/* Conteúdo com espaçamento lateral */
+.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+.menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(34, 139, 34, 0.9);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.menu-button:hover {
   background-color: #1c5a3b;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+/* Cards container */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {
+    float: left;
+  }
+  .content {
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
 }

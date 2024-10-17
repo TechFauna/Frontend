@@ -8,8 +8,8 @@
   background-image: url('./images/backgroundimage2.png');
   background-size: cover;
   background-position: center;
-  opacity: 0.8; /* Opacidade ajustada para 80% */
-  z-index: -1; /* Mantém a imagem de fundo no plano de fundo */
+  opacity: 0.8; 
+  z-index: -1;
 }
 
 .navbar {
@@ -25,7 +25,7 @@
 
 .main-content {
   position: relative;
-  z-index: 1; /* Garante que o conteúdo principal fique acima da imagem de fundo */
-  padding: 20px;
+  z-index: 1; 
+  padding: 2px;
   color: #ffffff;
 }
