@@ -4,6 +4,7 @@ import './Home.css';
 function Home() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para controlar login
   const sidebarRef = useRef(null);
 
   const cardInfo = [
@@ -15,6 +16,13 @@ function Home() {
   const handleCardClick = (id) => {
     setSelectedCard(selectedCard === id ? null : id);
   };
+
+  // Simular login
+  useEffect(() => {
+    // Verificar se o usuário está logado
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token); // Se houver um token, o usuário está logado
+  }, []);
 
   // Função para fechar o menu ao clicar fora
   useEffect(() => {
@@ -38,8 +46,14 @@ function Home() {
       <aside className={`sidebar ${sidebarVisible ? 'visible' : ''}`} ref={sidebarRef}>
         <nav>
           <a href="/">Home</a>
-          <a href="/login">Login</a>
-          <a href="/recintos">Recintos</a>
+          {!isLoggedIn ? (
+            <>
+              <a href="/login">Login</a>
+              <a href="/register">Registrar</a>
+            </>
+          ) : (
+            <a href="/logout">Logout</a>
+          )}
         </nav>
       </aside>
 
@@ -57,6 +71,12 @@ function Home() {
             </div>
           ))}
         </div>
+        {!isLoggedIn && (
+          <div className="auth-buttons">
+            <a href="/login" className="auth-button">Login</a>
+            <a href="/register" className="auth-button">Registrar</a>
+          </div>
+        )}
       </div>
     </div>
   );

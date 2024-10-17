@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import supabase from '../supabaseCliente';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/register', { email, password });
-      alert(response.data.message);
-      navigate('/login'); // Redirecionar para a página de Login após o registro
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: senha
+      });
+  
+      if (error) throw error;
+      alert('Registro bem-sucedido!');
+      navigate('/login');
     } catch (error) {
-      setError(error.response?.data?.message || 'Error during registration');
+      setError(error.message || 'Erro ao registrar');
     }
   };
 
@@ -37,8 +42,8 @@ const Register = () => {
           <label>Senha:</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
             required
           />
         </div>
