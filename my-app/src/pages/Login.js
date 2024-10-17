@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import supabase from '../supabaseCliente';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', { email, password });
-      alert(response.data.message);
-      navigate('/recintos'); // Redirecionar para a página de Recintos após o login
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password: senha,
+      });
+  
+      if (error) throw error;
+      alert('Login bem-sucedido!');
+      navigate('/recintos');
     } catch (error) {
-      setError(error.response?.data?.message || 'Error during login');
+      setError(error.message || 'Erro ao entrar');
     }
   };
 
@@ -37,8 +42,8 @@ const Login = () => {
           <label>Senha:</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
             required
           />
         </div>

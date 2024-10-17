@@ -1,25 +1,31 @@
-.navbar {
-  background-color: hsl(117, 64%, 28%);
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #fff;
+/* Adicionando a imagem de fundo para todas as rotas */
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./images/backgroundimage2.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.8; /* Opacidade ajustada para 80% */
+  z-index: -1; /* Mantém a imagem de fundo no plano de fundo */
 }
 
-.navbar nav {
-  display: flex;
+.navbar {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px;
 }
 
 .navbar nav a {
-  color: #fff;
+  color: #ffffff;
+  margin: 0 15px;
   text-decoration: none;
-  padding: 10px;
-  margin-right: 20px;
-  transition: background-color 0.3s;
 }
 
-.navbar nav a:hover {
-  background-color: #34495e;
-  border-radius: 5px;
+.main-content {
+  position: relative;
+  z-index: 1; /* Garante que o conteúdo principal fique acima da imagem de fundo */
+  padding: 20px;
+  color: #ffffff;
 }

@@ -1,47 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import supabase from '../supabaseCliente';
+import { useNavigate } from 'react-router-dom';
 import './Recintos.css';
 
 function Recintos() {
   const [recintos, setRecintos] = useState([]);
   const [nome, setNome] = useState('');
   const [especie, setEspecie] = useState('');
-  const [quantRecintos, setQuantRecintos] = useState('');
-  const [animais, setAnimais] = useState('');
+  const [qntAnimais, setQntAnimais] = useState('');
+  const navigate = useNavigate();
 
-  // Buscar todos os recintos no carregamento inicial
   useEffect(() => {
     const fetchRecintos = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/recintos');
-        setRecintos(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar recintos:', error);
-      }
+      const { data, error } = await supabase.from('recintos').select('*');
+      if (error) console.error('Erro ao buscar recintos:', error);
+      else setRecintos(data);
     };
 
     fetchRecintos();
   }, []);
 
-  // Adicionar um novo recinto
   const handleAddRecinto = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/recintos', {
-        nome,
-        especie,
-        recintos: quantRecintos,
-        animais,
-      });
+    const { data, error } = await supabase.from('recintos').insert([{ nome, especie, qnt_animais: qntAnimais }]);
+    if (error) console.error('Erro ao adicionar recinto:', error);
+    else setRecintos([...recintos, ...data]);
+    setNome('');
+    setEspecie('');
+    setQntAnimais('');
+  };
 
-      setRecintos([...recintos, response.data.data[0]]); // Adicionar novo recinto ao estado
-      setNome('');
-      setEspecie('');
-      setQuantRecintos('');
-      setAnimais('');
-    } catch (error) {
-      console.error('Erro ao adicionar recinto:', error);
-    }
+  const handleCardClick = (recintoId) => {
+    navigate(`/recintos/${recintoId}`);
   };
 
   return (
@@ -64,28 +54,20 @@ function Recintos() {
         />
         <input
           type="number"
-          placeholder="Quantidade de Recintos"
-          value={quantRecintos}
-          onChange={(e) => setQuantRecintos(e.target.value)}
-          required
-        />
-        <input
-          type="number"
           placeholder="Quantidade de Animais"
-          value={animais}
-          onChange={(e) => setAnimais(e.target.value)}
+          value={qntAnimais}
+          onChange={(e) => setQntAnimais(e.target.value)}
           required
         />
         <button type="submit">Adicionar Recinto</button>
       </form>
 
       <div className="recintos-grid">
-        {recintos.map((recinto, index) => (
-          <div key={index} className="recinto-card">
+        {recintos.map((recinto) => (
+          <div key={recinto.id_recinto} className="recinto-card" onClick={() => handleCardClick(recinto.id_recinto)}>
             <h3>{recinto.nome}</h3>
             <p>Espécie: {recinto.especie}</p>
-            <p>Recintos: {recinto.recintos}</p>
-            <p>Animais: {recinto.animais}</p>
+            <p>Animais: {recinto.qnt_animais}</p>
           </div>
         ))}
       </div>
