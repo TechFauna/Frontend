@@ -34,7 +34,7 @@ function App() {
             <Route path="/recintos" element={<Recintos />} />
             <Route path="/recintos/:id" element={<RecintoView />} />
             <Route path="/home-user" element={<HomeUser />} /> 
-            <Route path="/species-control" element={<SpeciesControl />} />
+            <Route path="/species-control" element={<SpeciesControl />} />
           </Routes>
         </div>
       </div>

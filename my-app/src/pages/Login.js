@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import supabase from '../supabaseCliente';
-import './Login.css';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,16 +12,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password: senha,
-      });
-  
-      if (error) throw error;
-      alert('Login bem-sucedido!');
-      navigate('/recintos');
+      const response = await axios.post('http://localhost:8000/login', { email, senha });
+      if (response.status === 200) {
+        localStorage.setItem('id_user', response.data.id_user); // Salvando id_user
+        alert('Login bem-sucedido!');
+        navigate('/recintos');
+      }
     } catch (error) {
-      setError(error.message || 'Erro ao entrar');
+      setError(error.response?.data?.message || 'Erro ao entrar');
     }
   };
 

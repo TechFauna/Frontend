@@ -8,16 +8,25 @@ const Register = () => {
   const [senha, setSenha] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: senha
+      // Cria um usuário no Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: email, 
+        password: senha,
       });
-  
-      if (error) throw error;
+
+      if (authError) throw authError;
+
+      // Se o registro no Auth for bem-sucedido, cria o registro na tabela 'perfil'
+      const { data: userData, error: userError } = await supabase
+        .from('perfil')
+        .insert([{ email: email, senha: senha, id_user: authData.user.id }]);
+
+      if (userError) throw userError;
+
       alert('Registro bem-sucedido!');
       navigate('/login');
     } catch (error) {
