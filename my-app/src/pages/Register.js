@@ -12,7 +12,6 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      // Faz o sign-up no Supabase
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: email,
         password: senha,
@@ -20,8 +19,7 @@ const Register = () => {
 
       if (authError) throw authError;
 
-      alert('Registro bem-sucedido!');
-      navigate('/login');  // Redireciona para a página de login após o registro
+      navigate('/home-user');
     } catch (error) {
       setError(error.message || 'Erro ao registrar');
     }

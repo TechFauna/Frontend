@@ -1,35 +1,28 @@
 .species-control-container {
-    padding: 20px;
-  }
-  
-  .species-form {
-    margin-bottom: 20px;
-  }
-  
-  .species-form input,
-  .species-form select {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border-radius: 5px;
-  }
-  
-  .species-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  
-  .species-card {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 20px;
-  }
+  padding: 20px;
+}
+
+.species-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.species-list {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.species-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.species-card h3 {
+  color: #00ff00; /* Cor verde */
+}

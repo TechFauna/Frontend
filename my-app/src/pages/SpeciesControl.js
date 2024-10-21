@@ -5,20 +5,17 @@ import './SpeciesControl.css';
 const SpeciesControl = () => {
   const [species, setSpecies] = useState([]);
   const [newSpecies, setNewSpecies] = useState({ name: '', weight: '', sex: '', size: '' });
-  const [error, setError] = useState(null);
 
-  // Função para buscar espécies
   useEffect(() => {
     const fetchSpecies = async () => {
       const { data, error } = await supabase.from('species').select('*');
-      if (error) setError('Erro ao carregar espécies');
+      if (error) console.error('Erro ao carregar espécies:', error);
       else setSpecies(data);
     };
 
     fetchSpecies();
   }, []);
 
-  // Função para adicionar nova espécie
   const handleAddSpecies = async (e) => {
     e.preventDefault();
     const { name, weight, sex, size } = newSpecies;
@@ -26,19 +23,17 @@ const SpeciesControl = () => {
     try {
       const { data, error } = await supabase.from('species').insert([{ name, weight, sex, size }]);
       if (error) throw error;
-      setSpecies([...species, ...data]);  // Atualiza a lista de espécies
-      setNewSpecies({ name: '', weight: '', sex: '', size: '' });  // Limpa o formulário
+      setSpecies([...species, ...data]);
+      setNewSpecies({ name: '', weight: '', sex: '', size: '' });
     } catch (error) {
-      setError('Erro ao adicionar espécie');
+      console.error('Erro ao adicionar espécie:', error);
     }
   };
 
   return (
     <div className="species-control-container">
-      <h1>Controle de Espécies</h1>
-      {/* Formulário para adicionar nova espécie */}
+      <h1 className="page-title">Controle de Espécies</h1>
       <form onSubmit={handleAddSpecies} className="species-form">
-        <h2>Adicionar Nova Espécie</h2>
         <div>
           <label>Nome:</label>
           <input
@@ -81,19 +76,16 @@ const SpeciesControl = () => {
         <button type="submit">Adicionar Espécie</button>
       </form>
 
-      {/* Lista de espécies */}
       <div className="species-list">
         {species.map((specie) => (
           <div key={specie.id} className="species-card">
             <h3>{specie.name}</h3>
-            <p>Peso: {specie.weight} kg</p>
-            <p>Sexo: {specie.sex}</p>
-            <p>Tamanho: {specie.size} cm</p>
+            <p className="page-content">Peso: {specie.weight} kg</p>
+            <p className="page-content">Sexo: {specie.sex}</p>
+            <p className="page-content">Tamanho: {specie.size} cm</p>
           </div>
         ))}
       </div>
-
-      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };

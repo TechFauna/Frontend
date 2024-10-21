@@ -12,7 +12,6 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Faz a autenticação com o Supabase
       const { data, error: loginError } = await supabase.auth.signInWithPassword({
         email: email,
         password: senha,
@@ -20,9 +19,8 @@ const Login = ({ onLogin }) => {
 
       if (loginError) throw loginError;
 
-      localStorage.setItem('id_user', data.user.id);  // Armazena o id do usuário no localStorage
-      onLogin();  // Informa ao App.js que o login foi bem-sucedido
-      navigate('/home-user');  // Redireciona para a página Home
+      onLogin();  
+      navigate('/home-user');  
     } catch (error) {
       setError('Erro ao entrar: ' + (error.message || 'Credenciais inválidas'));
     }
