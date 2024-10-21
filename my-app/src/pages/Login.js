@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import supabase from '../supabaseCliente';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState(null);
@@ -12,14 +12,17 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/login', { email, senha });
-      if (response.status === 200) {
-        localStorage.setItem('id_user', response.data.id_user); // Salvando id_user
-        alert('Login bem-sucedido!');
-        navigate('/recintos');
-      }
+      const { data, error: loginError } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: senha,
+      });
+
+      if (loginError) throw loginError;
+
+      onLogin();  
+      navigate('/home-user');  
     } catch (error) {
-      setError(error.response?.data?.message || 'Erro ao entrar');
+      setError('Erro ao entrar: ' + (error.message || 'Credenciais inválidas'));
     }
   };
 

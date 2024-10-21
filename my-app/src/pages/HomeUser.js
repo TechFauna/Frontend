@@ -1,38 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
 import './HomeUser.css';
 
 function HomeUser() {
-  const [recintos, setRecintos] = useState([]);
-
- 
-  const id_user = localStorage.getItem('id_user') || 'default_user_id';
-
-  useEffect(() => {
-    const fetchRecintos = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/recintos?user_id=${id_user}`);
-        setRecintos(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar recintos:', error);
-      }
-    };
-
-    fetchRecintos();
-  }, [id_user]);
-
   return (
-    <div className="home-user-container">
-      <h1>Meus Recintos</h1>
-      <div className="recintos-grid">
-        {recintos.map((recinto) => (
-          <Link to={`/recintos/${recinto.id}`} key={recinto.id} className="recinto-card">
-            <h2>{recinto.nome}</h2>
-            <p>Espécie: {recinto.especie}</p>
-            <p>Quantidade de Animais: {recinto.qnt_animais}</p>
-          </Link>
-        ))}
+    <div>
+      <header className="navbar">
+        <nav>
+          <ul>
+            <li><a href="/home-user">Home</a></li>
+            <li><a href="/recintos">Recintos</a></li>
+            <li><a href="/species-control">Espécies</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <div className="home-user-container">
+        <h1>Bem-vindo à página inicial do usuário!</h1>
+        <p>Escolha uma das opções no menu para continuar.</p>
       </div>
     </div>
   );
