@@ -1,40 +1,66 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/Home';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import supabase from './supabaseCliente';
 import HomeUser from './pages/HomeUser';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Recintos from './pages/Recintos';
-import RecintoView from './pages/RecintoView';
 import SpeciesControl from './pages/SpeciesControl';
-
 import './App.css';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Verifica se o usuário está logado ao carregar o app
+  useEffect(() => {
+    const user = supabase.auth.user();  // Verifica se há um usuário logado
+    setIsLoggedIn(!!user);  // Se o usuário existir, define isLoggedIn como true
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();  // Desloga o usuário no Supabase
+    setIsLoggedIn(false);  // Atualiza o estado para deslogado
+  };
+
   return (
     <Router>
       <div className="app">
-        <div className="background-overlay"></div> 
-        
-        <header className="navbar">
+        <aside className="sidebar">
           <nav>
-            <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Registrar</Link>
-            <Link to="/recintos">Recintos</Link>
-            <Link to="/species-control">Espécies</Link>
+            {!isLoggedIn ? (
+              <>
+                <Link to="/login">Login</Link>
+                <Link to="/register">Registrar</Link>
+              </>
+            ) : (
+              <>
+                <Link to="/home-user">Home</Link>
+                <Link to="/recintos">Recintos</Link>
+                <Link to="/species-control">Espécies</Link>
+                <button onClick={handleLogout}>Logout</button>
+              </>
+            )}
           </nav>
-        </header>
-        
+        </aside>
+
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/recintos" element={<Recintos />} />
-            <Route path="/recintos/:id" element={<RecintoView />} />
-            <Route path="/home-user" element={<HomeUser />} /> 
-            <Route path="/species-control" element={<SpeciesControl />} />
+            {!isLoggedIn ? (
+              <>
+                {/* Rotas para usuários não autenticados */}
+                <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="*" element={<Navigate to="/login" />} />
+              </>
+            ) : (
+              <>
+                {/* Rotas para usuários autenticados */}
+                <Route path="/home-user" element={<HomeUser />} />
+                <Route path="/recintos" element={<Recintos />} />
+                <Route path="/species-control" element={<SpeciesControl />} />
+                <Route path="*" element={<Navigate to="/home-user" />} />
+              </>
+            )}
           </Routes>
         </div>
       </div>

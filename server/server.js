@@ -3,14 +3,15 @@ const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 const app = express();
 
+// Habilita CORS para o frontend React
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: 'http://localhost:3000',  // Substitua pela URL do seu frontend
 }));
 app.use(express.json());
 
 // Configurações do Supabase
-const supabaseUrl = 'https://hblarpwdedgzbkigddvy.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhibGFycHdkZWRnemJraWdkZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgzNjMwMjQsImV4cCI6MjA0MzkzOTAyNH0.JRmP9joPy3YSIga3vTDDPANwUwZOIfqpxsurjRvIa-A';  // Certifique-se de usar a chave correta
+const supabaseUrl = 'https://hblarpwdedgzbkigddvy.supabase.co';  // URL do seu Supabase
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhibGFycHdkZWRnemJraWdkZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgzNjMwMjQsImV4cCI6MjA0MzkzOTAyNH0.JRmP9joPy3YSIga3vTDDPANwUwZOIfqpxsurjRvIa-A';  // Insira sua chave pública do Supabase
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Função de validação de e-mail
@@ -19,7 +20,7 @@ const validateEmail = (email) => {
   return re.test(email);
 };
 
-// Registro de usuário
+// Registro de usuário e criação de recinto padrão
 app.post('/register', async (req, res) => {
   const { email, senha } = req.body;
 
@@ -28,20 +29,29 @@ app.post('/register', async (req, res) => {
   }
 
   try {
-    const { data, error } = await supabase
-      .from('users')
-      .insert([{ email, senha }]);
+    // Cria o usuário no Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: email,
+      password: senha,
+    });
 
-    if (error) throw error;
+    if (authError) throw authError;
 
-    return res.status(201).json({ message: 'Usuário registrado com sucesso' });
+    // Cria um recinto padrão para o novo usuário
+    const { data: recintoData, error: recintoError } = await supabase
+      .from('recintos')
+      .insert([{ nome: 'Recinto Padrão', especie: 'Espécie Inicial', qnt_animais: 0, id_user: authData.user.id }]);
+
+    if (recintoError) throw recintoError;
+
+    return res.status(201).json({ message: 'Usuário e recinto criado com sucesso', recinto: recintoData });
   } catch (error) {
-    console.error('Erro ao registrar usuário:', error);
-    return res.status(500).json({ message: 'Erro ao registrar usuário', error: error.message });
+    console.error('Erro ao registrar usuário e criar recinto:', error);
+    return res.status(500).json({ message: 'Erro ao registrar usuário e criar recinto', error: error.message });
   }
 });
 
-// Login de usuário
+// Login de usuário usando Supabase Auth
 app.post('/login', async (req, res) => {
   const { email, senha } = req.body;
 
@@ -50,18 +60,18 @@ app.post('/login', async (req, res) => {
   }
 
   try {
-    const { data, error } = await supabase
-      .from('users')
-      .select('id_user')
-      .eq('email', email)
-      .eq('senha', senha)
-      .single(); // Apenas um resultado esperado
+    // Faz a autenticação com Supabase
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: senha,
+    });
 
-    if (error || !data) {
+    if (authError) {
       return res.status(401).json({ message: 'Credenciais inválidas' });
     }
 
-    return res.status(200).json({ message: 'Login realizado com sucesso', id_user: data.id_user });
+    // Retorna o id_user após login bem-sucedido
+    return res.status(200).json({ message: 'Login realizado com sucesso', id_user: authData.user.id });
   } catch (error) {
     console.error('Erro ao realizar login:', error);
     return res.status(500).json({ message: 'Erro ao realizar login', error: error.message });
@@ -80,7 +90,7 @@ app.get('/recintos', async (req, res) => {
     const { data, error } = await supabase
       .from('recintos')
       .select('*')
-      .eq('id_user', user_id); // filtrando por id_user
+      .eq('id_user', user_id);
 
     if (error) {
       throw error;
@@ -111,6 +121,7 @@ app.post('/recintos', async (req, res) => {
   }
 });
 
+// Inicia o servidor na porta 8000
 const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import supabase from '../supabaseCliente'; 
-import './SpeciesControl.css'; 
+import supabase from '../supabaseCliente';
+import './SpeciesControl.css';
+
 const SpeciesControl = () => {
   const [species, setSpecies] = useState([]);
   const [newSpecies, setNewSpecies] = useState({ name: '', weight: '', sex: '', size: '' });
   const [error, setError] = useState(null);
 
-
+  // Função para buscar espécies
   useEffect(() => {
     const fetchSpecies = async () => {
       const { data, error } = await supabase.from('species').select('*');
@@ -17,7 +18,7 @@ const SpeciesControl = () => {
     fetchSpecies();
   }, []);
 
- 
+  // Função para adicionar nova espécie
   const handleAddSpecies = async (e) => {
     e.preventDefault();
     const { name, weight, sex, size } = newSpecies;
@@ -25,8 +26,8 @@ const SpeciesControl = () => {
     try {
       const { data, error } = await supabase.from('species').insert([{ name, weight, sex, size }]);
       if (error) throw error;
-      setSpecies([...species, ...data]); // Atualiza a lista
-      setNewSpecies({ name: '', weight: '', sex: '', size: '' }); // Limpa o formulário
+      setSpecies([...species, ...data]);  // Atualiza a lista de espécies
+      setNewSpecies({ name: '', weight: '', sex: '', size: '' });  // Limpa o formulário
     } catch (error) {
       setError('Erro ao adicionar espécie');
     }
@@ -35,7 +36,6 @@ const SpeciesControl = () => {
   return (
     <div className="species-control-container">
       <h1>Controle de Espécies</h1>
-      
       {/* Formulário para adicionar nova espécie */}
       <form onSubmit={handleAddSpecies} className="species-form">
         <h2>Adicionar Nova Espécie</h2>
@@ -92,7 +92,7 @@ const SpeciesControl = () => {
           </div>
         ))}
       </div>
-      
+
       {error && <p className="error-message">{error}</p>}
     </div>
   );
