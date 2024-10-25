@@ -19,15 +19,24 @@ const Login = ({ onLogin }) => {
 
       if (loginError) throw loginError;
 
-      onLogin();  
-      navigate('/home-user');  
+      // Após o login, busca o nome do usuário na tabela 'perfil'
+      const { data: perfilData, error: profileError } = await supabase
+        .from('perfil')
+        .select('nome')
+        .eq('id_user', data.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      onLogin({ ...data.user, nome: perfilData.nome });  // Passa o nome do usuário ao componente pai
+      navigate('/home-user');
     } catch (error) {
       setError('Erro ao entrar: ' + (error.message || 'Credenciais inválidas'));
     }
   };
 
   return (
-    <div className="login-register-container">
+    <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
         <h2>Entrar</h2>
         <div>

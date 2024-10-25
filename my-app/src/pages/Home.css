@@ -2,111 +2,76 @@
 h1 {
   text-align: center;
   font-size: 3em;
-  color: white;
+  color: #22300b;
+}
+
+p {
+  text-align: center;
+  font-size: 1.2em;
+  color: #22300b;
 }
 
 /* Estilizar os cards */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cards por linha */
+  gap: 20px;
+  justify-items: center;
+  margin-top: 40px;
+}
+
 .card {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  padding: 80px;
-  margin: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 300px;
   text-align: center;
-  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card.active {
-  background-color: rgba(0, 128, 0, 0.8); /* Card ativo com destaque */
-  color: white;
+.card h3 {
+  color: #000000; /* Cor do título do card */
 }
+
+.card p {
+  color: #152202; /* Cor do texto do card */
+}
+
+.card:hover {
+  background-color: #dfeede;
+  transform: scale(1.05); /* Efeito de hover */
+  transition: all 0.3s ease;
+}
+
 
 /* Menu lateral */
 .sidebar {
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: rgba(46, 139, 87, 0.9);
+  background-color: #22300b;
   position: fixed;
   height: 100%;
   overflow: auto;
-  left: -200px; /* Oculto por padrão */
-  transition: left 0.3s;
 }
 
-.sidebar.visible {
-  left: 0; /* Mostra o menu lateral */
-}
-
-/* Sidebar links */
 .sidebar a {
   display: block;
-  color: #ffffff;
-  padding: 25px;
+  color: white;
+  padding: 20px;
   text-decoration: none;
+  text-align: center;
 }
 
-/* Active/current link */
-.sidebar a.active {
-  background-color: #2e8b57;
-  color: white;
+.sidebar a:hover {
+  background-color: #344d0e;
 }
 
-/* Links on hover */
-.sidebar a:hover:not(.active) {
-  background-color: #1c5a3b;
-  color: white;
-}
-
-/* Conteúdo com espaçamento lateral */
+/* Ajuste de espaçamento */
 .content {
-  margin-left: 200px;
-  padding: 1px 16px;
-  height: 1000px;
+  margin-left: 220px;
+  padding: 20px;
 }
-
-.menu-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background-color: rgba(34, 139, 34, 0.9);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 18px;
-}
-
-.menu-button:hover {
-  background-color: #1c5a3b;
-}
-
-/* Cards container */
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 700px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .sidebar a {
-    float: left;
-  }
-  .content {
-    margin-left: 0;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .sidebar a {
-    text-align: center;
-    float: none;
-  }
+.content h1 {
+  color: #22300b;
 }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import supabase from '../supabaseCliente';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import './Register.css';
 
 const Register = () => {
+  const [nome, setNome] = useState(''); // Adiciona o estado para o nome
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState(null);
@@ -12,12 +13,20 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      // Registro do usuário com email e senha no Supabase
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: email,
         password: senha,
       });
 
       if (authError) throw authError;
+
+      // Após criar o usuário, insere o nome e outros dados na tabela perfil com UUID
+      const { error: profileError } = await supabase
+        .from('perfil')
+        .insert([{ id_user: authData.user.id, nome: nome, email: email, senha: senha }]);
+
+      if (profileError) throw profileError;
 
       navigate('/home-user');
     } catch (error) {
@@ -26,9 +35,18 @@ const Register = () => {
   };
 
   return (
-    <div className="login-register-container">
+    <div className="register-container">
       <form onSubmit={handleRegister} className="register-form">
         <h2>Cadastrar</h2>
+        <div>
+          <label>Nome:</label> {/* Campo para o nome */}
+          <input
+            type="text"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Email:</label>
           <input
