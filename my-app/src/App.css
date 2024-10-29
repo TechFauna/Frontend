@@ -3,14 +3,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f4f7f6;
+  background-color: #344d0e; /* Cor principal */
 }
 
 /* Estilo da Sidebar (Menu Lateral) */
 .sidebar {
   height: 100vh;
   width: 250px;
-  background-color: #2f4f4f;
+  background-color: #22300b; /* Cor principal modificada */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,41 +25,42 @@ body {
 
 .sidebar a {
   text-decoration: none;
-  color: #ffffff;
+  color: white; /* Cor dos textos */
   font-size: 18px;
   margin: 10px 0;
   padding: 10px 20px;
   width: 100%;
   text-align: center;
-  background-color: #3c6e71;
+  background-color: #293b14; /* Cor do hover */
   border-radius: 8px;
   transition: background-color 0.3s ease;
 }
 
 .sidebar a:hover {
-  background-color: #284b63;
+  background-color: #22300b;
 }
 
 .sidebar button {
-  background-color: #d7263d;
+  background-color: #22300b;
   border: none;
-  color: white;
+  color: rgb(255, 0, 0);
+  font-size: 18px;
+  margin: 10px 0;
   padding: 10px 20px;
+  width: 100%;
+  text-align: center;
   border-radius: 8px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: auto;
-  margin-bottom: 20px;
 }
 
 .sidebar button:hover {
-  background-color: #bb1c2a;
+  background-color: #293b14;
 }
 
-/* Estilo da Navbar (apenas visível na tela do usuário após login) */
+/* Estilo da Navbar */
 .navbar {
-  background-color: #2f4f4f;
-  color: rgb(0, 0, 0);
+  background-color: #22300b;
+  color: white;
   padding: 20px;
   text-align: center;
   position: fixed;
@@ -72,14 +73,15 @@ body {
 .navbar h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: #00ff00; /* Cor verde para as fontes */
+  color: white;
 }
 
 /* Estilos da Main Content */
 .main-content {
   margin-left: 250px;
   padding: 40px;
-  padding-top: 80px; /* Para evitar sobreposição da navbar */
+  padding-top: 80px; 
+  background-color: #344d0e; 
 }
 
 .center-content {
@@ -101,21 +103,13 @@ body {
   background-color: #ffffff;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 5px 15px #22300b; /* Sombra */
   max-width: 400px;
   width: 100%;
 }
 
-h2 {
-  text-align: center;
-  color: #00ff00; /* Cor verde */
-  margin-bottom: 20px;
-}
 
-label {
-  color: #00ff00; /* Cor verde */
-  font-weight: bold;
-}
+
 
 input {
   width: 100%;
@@ -130,7 +124,7 @@ button {
   width: 100%;
   padding: 12px;
   border: none;
-  background-color: #ffba08;
+  background-color: #22300b;
   color: white;
   font-size: 16px;
   border-radius: 8px;
@@ -139,12 +133,12 @@ button {
 }
 
 button:hover {
-  background-color: #faa307;
+  background-color: #0d1305;
 }
 
 /* Estilos Específicos para Links no Formulário */
 .login-register-container a {
-  color: #00ff00; /* Cor verde */
+  color: #22300b; 
   text-align: center;
   display: block;
   margin-top: 15px;
@@ -154,14 +148,9 @@ button:hover {
 
 /* Estilos para a página de Recintos e Controle de Espécies */
 .page-title {
-  color: #00ff00; /* Cor verde */
+  color: #22300b; 
   font-size: 2rem;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.page-content {
-  font-size: 1.2rem;
-  color: #00ff00; /* Cor verde */
-  text-align: left;
-}

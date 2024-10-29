@@ -8,7 +8,11 @@
 }
 
 .create-recinto-form h2 {
-  color: #3c6e71;
+  color: #344d0e;
+}
+
+.h2 {
+  color: white;
 }
 
 .create-recinto-form label {
@@ -26,8 +30,7 @@
 }
 
 .create-recinto-form button {
-  background-color: #00ff00; /* Cor verde */
-  color: white;
+  background-color: 344d0e;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
@@ -37,7 +40,7 @@
 }
 
 .create-recinto-form button:hover {
-  background-color: #00cc00;
+  background-color: #0d1305;
 }
 
 /* Estilos para mensagens de erro e sucesso */

@@ -1,48 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
+import { useNavigate } from 'react-router-dom';
+import supabase from '../supabaseCliente'; 
 
 function Home() {
-  const [selectedCard, setSelectedCard] = useState(null);
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const sidebarRef = useRef(null);
-
-  const cardInfo = [
-    { id: 1, title: "Tema 1", info: "Informação sobre o tema 1" },
-    { id: 2, title: "Tema 2", info: "Informação sobre o tema 2" },
-    { id: 3, title: "Tema 3", info: "Informação sobre o tema 3" },
-    { id: 4, title: "Tema 4", info: "Informação sobre o tema 4" },
-    { id: 5, title: "Tema 5", info: "Informação sobre o tema 5" }
-  ];
-
-  const handleCardClick = (id) => {
-    setSelectedCard(selectedCard === id ? null : id);
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        setSidebarVisible(false);
-      }
+    const checkLoginStatus = async () => {
+      const { data } = await supabase.auth.getUser(); 
+      setIsLoggedIn(!!data?.user); 
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    checkLoginStatus();
   }, []);
 
   return (
     <div className="home-container">
-      <button className="menu-button" onClick={() => setSidebarVisible(!sidebarVisible)}>
-        ☰ Menu
-      </button>
-      <aside className={`sidebar ${sidebarVisible ? 'visible' : ''}`} ref={sidebarRef}>
+      <aside className="sidebar" ref={sidebarRef}>
         <nav>
           <a href="/">Home</a>
           {!isLoggedIn ? (
@@ -51,24 +28,32 @@ function Home() {
               <a href="/register">Registrar</a>
             </>
           ) : (
-            <a href="/logout">Logout</a>
+            <a href="/logout" onClick={() => navigate('/login')}>Logout</a>
           )}
         </nav>
       </aside>
 
       <div className="content">
         <h1>Bem-vindo à Fauna Tech</h1>
+        <p>Explore mais sobre o sistema e suas funcionalidades!</p>
+
         <div className="card-container">
-          {cardInfo.map((card) => (
-            <div
-              key={card.id}
-              className={`card ${selectedCard === card.id ? 'active' : ''}`}
-              onClick={() => handleCardClick(card.id)}
-            >
-              <h3>{card.title}</h3>
-              {selectedCard === card.id && <p>{card.info}</p>}
-            </div>
-          ))}
+          <div className="card">
+            <h3>Tecnologia e Fauna</h3>
+            <p>Explore como a tecnologia pode auxiliar na preservação e monitoramento da fauna ao redor do mundo.</p>
+          </div>
+          <div className="card">
+            <h3>Monitoramento Inteligente</h3>
+            <p>Utilizando sensores e IA, é possível acompanhar o comportamento animal e seu ambiente natural em tempo real.</p>
+          </div>
+          <div className="card">
+            <h3>Conservação com Dados</h3>
+            <p>Big Data e análises preditivas são utilizados para mapear áreas de risco e implementar ações de preservação.</p>
+          </div>
+          <div className="card">
+            <h3>Inovações Tecnológicas</h3>
+            <p>Robôs e drones estão sendo usados para coletar dados em locais inacessíveis, facilitando a preservação de espécies em extinção.</p>
+          </div>
         </div>
       </div>
     </div>
