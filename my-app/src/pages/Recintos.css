@@ -1,55 +1,49 @@
-/* Estilos para o formulário de criação de recintos */
-.create-recinto-form {
-  margin-bottom: 40px;
-  background-color: #f9f9f9;
+.recintos-container {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.create-recinto-form h2 {
+.create-recinto-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.recintos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.recinto-card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.recinto-card h3 {
+  margin: 0;
+  font-size: 1.5rem;
   color: #344d0e;
 }
 
-.h2 {
-  color: white;
+.recinto-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #344d0e;
 }
 
-.create-recinto-form label {
-  display: block;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-.create-recinto-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.create-recinto-form button {
-  background-color: 344d0e;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.create-recinto-form button:hover {
-  background-color: #0d1305;
-}
-
-/* Estilos para mensagens de erro e sucesso */
 .error-message {
   color: red;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .success-message {
   color: green;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }

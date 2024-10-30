@@ -5,12 +5,16 @@ import './SpeciesControl.css';
 const SpeciesControl = () => {
   const [species, setSpecies] = useState([]);
   const [newSpecies, setNewSpecies] = useState({ name: '', weight: '', sex: '', size: '' });
+  const [loading, setLoading] = useState(false); // Estado de carregamento para melhorar UX
 
   useEffect(() => {
     const fetchSpecies = async () => {
       const { data, error } = await supabase.from('species').select('*');
-      if (error) console.error('Erro ao carregar espécies:', error);
-      else setSpecies(data);
+      if (error) {
+        console.error('Erro ao carregar espécies:', error);
+      } else {
+        setSpecies(data);
+      }
     };
 
     fetchSpecies();
@@ -18,15 +22,24 @@ const SpeciesControl = () => {
 
   const handleAddSpecies = async (e) => {
     e.preventDefault();
+    setLoading(true); // Inicia o carregamento
+
     const { name, weight, sex, size } = newSpecies;
 
     try {
-      const { data, error } = await supabase.from('species').insert([{ name, weight, sex, size }]);
+      const { data, error } = await supabase
+        .from('species')
+        .insert([{ name, weight, sex, size }])
+        .select(); // Garantir que os dados da nova espécie sejam retornados
+
       if (error) throw error;
-      setSpecies([...species, ...data]);
-      setNewSpecies({ name: '', weight: '', sex: '', size: '' });
+
+      setSpecies((prevSpecies) => [...prevSpecies, ...data]); // Atualiza o estado imediatamente
+      setNewSpecies({ name: '', weight: '', sex: '', size: '' }); // Limpa os campos do formulário
     } catch (error) {
       console.error('Erro ao adicionar espécie:', error);
+    } finally {
+      setLoading(false); // Termina o carregamento
     }
   };
 
@@ -73,7 +86,9 @@ const SpeciesControl = () => {
             required
           />
         </div>
-        <button type="submit">Adicionar Espécie</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Adicionando...' : 'Adicionar Espécie'}
+        </button>
       </form>
 
       <div className="species-list">
