@@ -4,43 +4,28 @@
     align-items: center;
     padding: 20px;
     font-family: Arial, sans-serif;
-}
-
-.recinto-view-container h1 {
+  }
+  
+  .recinto-view-container h1 {
     font-size: 2rem;
     margin-bottom: 10px;
-}
-
-.recinto-view-container img {
-    max-width: 100%;
-    height: auto;
+  }
+  
+  .recinto-info,
+  .especie-info {
+    background-color: #f9f9f9;
+    padding: 15px;
     border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-}
-
-.recinto-info {
     text-align: center;
-    margin-bottom: 30px;
-}
-
-.recinto-info p {
-    font-size: 1.2rem;
-    margin: 5px 0;
-}
-
-.individuos-list {
     width: 100%;
     max-width: 600px;
-}
-
-.individuos-list h2 {
-    margin-bottom: 10px;
-}
-
-.individuos-list li {
-    background-color: #f9f9f9;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+  }
+  
+  .recinto-info p,
+  .especie-info p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+  }
+  

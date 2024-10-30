@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../supabaseCliente';
-import './Recintos.css'; 
+import './Recintos.css';
 
-const Recintos = ({ user }) => { // Recebe o usuário autenticado como prop
+const Recintos = ({ user }) => {
   const [nomeRecinto, setNomeRecinto] = useState('');
   const [especie, setEspecie] = useState('');
   const [qntAnimais, setQntAnimais] = useState(0);
   const [recintos, setRecintos] = useState([]);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // Função para buscar os recintos do usuário logado
   useEffect(() => {
     const fetchRecintos = async () => {
-      const { data, error } = await supabase
-        .from('recintos')
-        .select('*')
-        .eq('id_user', user.id);  // Filtra os recintos pelo id_user vindo do Supabase
+      try {
+        const { data, error } = await supabase
+          .from('recintos')
+          .select('*')
+          .eq('id_user', user.id);
 
-      if (error) {
+        if (error) {
+          throw error;
+        } else {
+          setRecintos(data);
+        }
+      } catch (error) {
         setError('Erro ao buscar os recintos do usuário.');
-      } else {
-        setRecintos(data);
+        console.error('Erro ao buscar recintos:', error);
       }
     };
 
@@ -30,24 +36,34 @@ const Recintos = ({ user }) => { // Recebe o usuário autenticado como prop
   // Função para criar um recinto
   const createRecinto = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase
-      .from('recintos')
-      .insert([
-        {
-          nome: nomeRecinto,
-          especie: especie,
-          qnt_animais: qntAnimais,
-          id_user: user.id // Insere o id_user junto com o recinto
-        }
-      ]);
+    setError(null);
+    setSuccessMessage(null);
 
-    if (error) {
+    try {
+      const { data, error } = await supabase
+        .from('recintos')
+        .insert([
+          {
+            nome: nomeRecinto,
+            especie: especie,
+            qnt_animais: qntAnimais,
+            id_user: user.id
+          }
+        ])
+        .select(); // Garante que o novo recinto seja retornado
+
+      if (error) {
+        throw error;
+      } else {
+        setRecintos((prevRecintos) => [...prevRecintos, ...data]);
+        setNomeRecinto('');
+        setEspecie('');
+        setQntAnimais(0);
+        setSuccessMessage('Recinto criado com sucesso!');
+      }
+    } catch (error) {
       setError('Erro ao criar o recinto.');
-    } else {
-      setNomeRecinto('');
-      setEspecie('');
-      setQntAnimais(0);
-      setRecintos([...recintos, ...data]); // Atualiza a lista de recintos com o novo
+      console.error('Erro ao criar recinto:', error);
     }
   };
 
@@ -55,6 +71,7 @@ const Recintos = ({ user }) => { // Recebe o usuário autenticado como prop
     <div className="recintos-container">
       <h1>Meus Recintos</h1>
       {error && <p className="error-message">{error}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
       
       <form className="create-recinto-form" onSubmit={createRecinto}>
         <h2>Criar Recinto</h2>
@@ -83,13 +100,15 @@ const Recintos = ({ user }) => { // Recebe o usuário autenticado como prop
       </form>
 
       <h2>Recintos Criados</h2>
-      <ul>
+      <div className="recintos-list">
         {recintos.map((recinto) => (
-          <li key={recinto.id_recinto}>
-            {recinto.nome} - {recinto.especie} ({recinto.qnt_animais} animais)
-          </li>
+          <div key={recinto.id_recinto} className="recinto-card">
+            <h3>{recinto.nome}</h3>
+            <p>Espécie: {recinto.especie}</p>
+            <p>Quantidade de Animais: {recinto.qnt_animais}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

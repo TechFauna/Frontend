@@ -4,14 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
-  const [nome, setNome] = useState(''); // Adiciona o estado para o nome
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null); // Novo estado para a mensagem de sucesso
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError(null); // Limpa o erro anterior
+    setSuccessMessage(null); // Limpa a mensagem de sucesso anterior
+
     try {
       // Registro do usuário com email e senha no Supabase
       const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -28,7 +32,9 @@ const Register = () => {
 
       if (profileError) throw profileError;
 
-      navigate('/home-user');
+      // Define a mensagem de sucesso e redireciona após um tempo
+      setSuccessMessage('Registro bem-sucedido! Indo para o login...');
+      setTimeout(() => navigate('/login'), 3000); 
     } catch (error) {
       setError(error.message || 'Erro ao registrar');
     }
@@ -39,7 +45,7 @@ const Register = () => {
       <form onSubmit={handleRegister} className="register-form">
         <h2>Cadastrar</h2>
         <div>
-          <label>Nome:</label> {/* Campo para o nome */}
+          <label>Nome:</label>
           <input
             type="text"
             value={nome}
@@ -65,7 +71,8 @@ const Register = () => {
             required
           />
         </div>
-        {error && <p>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
         <button type="submit">Cadastrar</button>
       </form>
     </div>

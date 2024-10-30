@@ -1,114 +1,57 @@
-/* Centralizar o título */
-h1 {
-  text-align: center;
-  font-size: 3em;
+.home-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
   color: white;
 }
 
-/* Estilizar os cards */
-.card {
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  padding: 40px;
-  margin: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
   text-align: center;
+  color: rgb(255, 255, 255);
+}
+
+/* Card Container para centralizar o card */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+/* Estilo do card */
+.card {
+  background-color: rgba(46, 139, 87, 0.9);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform 0.3s ease; /* Efeito hover */
-  width: 250px; /* Definir tamanho fixo */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  width: 250px;
 }
 
 .card:hover {
   transform: scale(1.05); /* Leve aumento no hover */
+  background-color: rgba(0, 128, 0, 0.8);
 }
 
-.card.active {
-  background-color: rgba(0, 128, 0, 0.8); /* Card ativo com destaque */
-  color: white;
-}
-
-/* Estilo para a parte traseira do card */
-.card-back {
-  margin-top: 20px;
-  color: white;
-  font-size: 16px;
-  background-color: rgba(0, 0, 0, 0.6); /* Fundo para a parte traseira */
-  padding: 10px;
-  border-radius: 8px;
-}
-
-/* Menu lateral fixo */
-.sidebar {
+.card h2 {
   margin: 0;
-  padding: 0;
-  width: 200px;
-  background-color: rgba(46, 139, 87, 0.9);
-  position: fixed;
-  height: 100%;
-  overflow: auto;
-  left: 0; /* Menu lateral fixo */
-  transition: left 0.3s;
+  font-size: 1.8rem;
 }
 
-/* Sidebar links */
-.sidebar a {
-  display: block;
-  color: #ffffff;
-  padding: 25px;
-  text-decoration: none;
-  font-size: 18px;
+.card p {
+  margin: 5px 0;
+  font-size: 1.2rem;
 }
 
-/* Active/current link */
-.sidebar a.active {
-  background-color: #2e8b57;
-  color: white;
-}
-
-/* Links on hover */
-.sidebar a:hover:not(.active) {
-  background-color: #1c5a3b;
-  color: white;
-}
-
-/* Conteúdo com espaçamento lateral */
-.content {
-  margin-left: 200px;
-  padding: 20px;
-  height: 100vh; /* Altura da página */
-  background-color: #f5f5f5;
-}
-
-.menu-button {
-  display: none; /* Não precisamos mais de um botão de menu */
-}
-
-/* Cards container */
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 700px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .sidebar a {
-    float: left;
-  }
-  .content {
-    margin-left: 0;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .sidebar a {
-    text-align: center;
-    float: none;
-  }
+.card-back {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #e0e0e0;
 }

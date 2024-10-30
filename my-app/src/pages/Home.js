@@ -21,7 +21,7 @@ function Home() {
     <div className="home-container">
       <aside className="sidebar" ref={sidebarRef}>
         <nav>
-          <a href="/">Home</a>
+          
           {!isLoggedIn ? (
             <>
               <a href="/login">Login</a>
