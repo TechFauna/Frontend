@@ -1,71 +1,77 @@
-.register-form {
-    padding: 50px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    max-width: 400px;
-    width: 90%;
-    margin: 50px auto;
-    text-align: center;
-    color: #5c2c2c;
-  }
-  
-  h2 {
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-    color: #344d0e;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #ffffff;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    color: #000;
-    background-color: rgba(255, 255, 255, 0.9);
-  }
-  
-  input:focus {
-    outline: none;
-    border-color: #104d09;
-  }
-  
-  button {
-    color: #ffffff;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0d1305;
-  }
-  
-  .switch-form {
-    margin-top: 15px;
-    cursor: pointer;
-    color: #ffffff;
-    font-size: 1rem;
-    text-decoration: underline;
-  }
-  .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
-  .success-message {
-    color: green;
-    margin-top: 10px;
-  }
-  
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #344d0e;
+}
+
+.form-section {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.form-section h2 {
+  font-size: 1.8rem;
+  color: #344d0e;
+  margin-bottom: 20px;
+}
+
+.form-section label {
+  display: block;
+  font-size: 0.9rem;
+  color: #344d0e;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.form-section input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form-section button {
+  width: 100%;
+  padding: 10px;
+  background-color: #344d0e;
+  color: #ffffff;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-section button:hover {
+  background-color: #293b14;
+}
+
+.error-message, .success-message {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
+.switch-form {
+  font-size: 0.9rem;
+  color: #344d0e;
+  cursor: pointer;
+  text-decoration: underline;
+}

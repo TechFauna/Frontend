@@ -19,7 +19,6 @@ const Login = ({ onLogin }) => {
 
       if (loginError) throw loginError;
 
-      // Após o login, busca o nome do usuário na tabela 'perfil'
       const { data: perfilData, error: profileError } = await supabase
         .from('perfil')
         .select('nome')
@@ -28,7 +27,7 @@ const Login = ({ onLogin }) => {
 
       if (profileError) throw profileError;
 
-      onLogin({ ...data.user, nome: perfilData.nome });  // Passa o nome do usuário ao componente pai
+      onLogin({ ...data.user, nome: perfilData.nome });
       navigate('/home-user');
     } catch (error) {
       setError('Erro ao entrar: ' + (error.message || 'Credenciais inválidas'));
@@ -36,30 +35,33 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <h2>Entrar</h2>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Senha:</label>
-          <input
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p>{error}</p>}
-        <button type="submit">Entrar</button>
-      </form>
+    <div className="login-page">
+      <div className="form-section">
+        <form onSubmit={handleLogin}>
+          <h2>Entrar</h2>
+          {error && <p className="error-message">{error}</p>}
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Senha:</label>
+            <input
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Entrar</button>
+          <p className="switch-form" onClick={() => navigate('/register')}>Não tem uma conta? Cadastre-se</p>
+        </form>
+      </div>
     </div>
   );
 };
