@@ -7,10 +7,11 @@ const Recintos = ({ user }) => {
   const [especie, setEspecie] = useState('');
   const [qntAnimais, setQntAnimais] = useState(0);
   const [recintos, setRecintos] = useState([]);
+  const [filteredRecintos, setFilteredRecintos] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // Função para buscar os recintos do usuário logado
   useEffect(() => {
     const fetchRecintos = async () => {
       try {
@@ -23,6 +24,7 @@ const Recintos = ({ user }) => {
           throw error;
         } else {
           setRecintos(data);
+          setFilteredRecintos(data);
         }
       } catch (error) {
         setError('Erro ao buscar os recintos do usuário.');
@@ -33,7 +35,6 @@ const Recintos = ({ user }) => {
     fetchRecintos();
   }, [user.id]);
 
-  // Função para criar um recinto
   const createRecinto = async (e) => {
     e.preventDefault();
     setError(null);
@@ -50,12 +51,14 @@ const Recintos = ({ user }) => {
             id_user: user.id
           }
         ])
-        .select(); // Garante que o novo recinto seja retornado
+        .select();
 
       if (error) {
         throw error;
       } else {
-        setRecintos((prevRecintos) => [...prevRecintos, ...data]);
+        const updatedRecintos = [...recintos, ...data];
+        setRecintos(updatedRecintos);
+        setFilteredRecintos(updatedRecintos);
         setNomeRecinto('');
         setEspecie('');
         setQntAnimais(0);
@@ -67,6 +70,18 @@ const Recintos = ({ user }) => {
     }
   };
 
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    setFilteredRecintos(
+      recintos.filter(
+        (recinto) =>
+          recinto.nome.toLowerCase().includes(term) ||
+          recinto.especie.toLowerCase().includes(term)
+      )
+    );
+  };
+
   return (
     <div className="recintos-container">
       <h1>Meus Recintos</h1>
@@ -75,23 +90,26 @@ const Recintos = ({ user }) => {
       
       <form className="create-recinto-form" onSubmit={createRecinto}>
         <h2>Criar Recinto</h2>
-        <label>Nome do Recinto</label>
+        <label>Nome do recinto:</label>
         <input
           type="text"
+          placeholder="Ex: Zoológico São Paulo"
           value={nomeRecinto}
           onChange={(e) => setNomeRecinto(e.target.value)}
           required
         />
-        <label>Espécie</label>
+        <label>Animal:</label>
         <input
           type="text"
+          placeholder="Ex: Leão"
           value={especie}
           onChange={(e) => setEspecie(e.target.value)}
           required
         />
-        <label>Quantidade de Animais</label>
+        <label>Quantidade:</label>
         <input
           type="number"
+          placeholder="Ex: 5"
           value={qntAnimais}
           onChange={(e) => setQntAnimais(e.target.value)}
           required
@@ -99,9 +117,18 @@ const Recintos = ({ user }) => {
         <button type="submit">Criar Recinto</button>
       </form>
 
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Pesquisar recinto ou espécie..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </div>
+
       <h2>Recintos Criados</h2>
       <div className="recintos-list">
-        {recintos.map((recinto) => (
+        {filteredRecintos.map((recinto) => (
           <div key={recinto.id_recinto} className="recinto-card">
             <h3>{recinto.nome}</h3>
             <p>Espécie: {recinto.especie}</p>

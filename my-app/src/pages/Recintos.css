@@ -1,49 +1,118 @@
+/* Container principal */
 .recintos-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  color: #ffffff;
 }
 
-.create-recinto-form {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+/* Título */
+h1, h2 {
+  text-align: center;
+  color: #ffffff;
   margin-bottom: 20px;
 }
 
-.recintos-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.recinto-card {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.recinto-card h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #344d0e;
-}
-
-.recinto-card p {
-  margin: 5px 0;
-  font-size: 1rem;
-  color: #344d0e;
-}
-
+/* Mensagens de erro e sucesso */
 .error-message {
   color: red;
-  margin-top: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .success-message {
   color: green;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Formulário de criação de recinto sem fundo */
+.create-recinto-form {
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Labels e campos de entrada */
+.create-recinto-form label {
+  display: block;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.create-recinto-form input[type="text"],
+.create-recinto-form input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Botão de submissão */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #344d0e;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #293b14;
+}
+
+/* Barra de pesquisa */
+.search-container {
+  display: flex;
+  justify-content: center;
   margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.search-container input {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Lista de cards de recintos */
+.recintos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+/* Estilo dos cards de recinto */
+.recinto-card {
+  background-color: #293b14; /* Cor semelhante à dos cards de espécies */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+}
+
+.recinto-card:hover {
+  transform: scale(1.05);
+}
+
+.recinto-card h3 {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.recinto-card p {
+  color: #dcdcdc;
+  margin: 5px 0;
 }
