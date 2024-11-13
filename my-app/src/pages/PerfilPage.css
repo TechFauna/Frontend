@@ -1,0 +1,95 @@
+.perfil-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #344d0e;
+    font-family: Arial, sans-serif;
+  }
+  
+  .perfil-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .profile-photo {
+    position: relative;
+  }
+  
+  .profile-photo img {
+    width: 160px; /* Aumentado para dar mais destaque */
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais destacada */
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-info h1 {
+    margin: 0;
+    font-size: 2em;
+    color: #344d0e;
+  }
+  
+  .profile-info .profile-name-input {
+    font-size: 1.5em;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #344d0e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2d3f0b;
+  }
+  
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
+  }
+  
+  .recintos-section {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .recintos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .recinto-card {
+    background-color: #2e8b57;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 150px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  

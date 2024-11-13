@@ -1,5 +1,6 @@
 .species-control-container {
   padding: 20px;
+  text-align: center;
 }
 
 .species-form {
@@ -32,4 +33,9 @@
   color: white; 
   border-radius: 2px;
   text-align: center;
+}
+
+.button {
+  text-align: center;
+  padding: 20px;
 }

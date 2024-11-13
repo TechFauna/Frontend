@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import HomeUser from './pages/HomeUser';
 import Recintos from './pages/Recintos';
 import SpeciesControl from './pages/SpeciesControl';
+import ControleReprodutivo from './pages/ControleReprodutivo';
+import PerfilPage from './pages/PerfilPage';
 import './App.css';
 
 function App() {
@@ -41,6 +43,7 @@ function App() {
               <>
                 <Link to="/recintos">Recintos</Link>
                 <Link to="/species-control">Espécies</Link>
+                <Link to="/controle-reprodutivo">Controle Reprodutivo</Link>
                 <button onClick={handleLogout}>Logout</button>
               </>
             )}
@@ -54,13 +57,17 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Login onLogin={(user) => setUser(user)} />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="*" element={<Navigate to="/home-user" />} />
               </>
             ) : (
               <>
                 <Route path="/home-user" element={<HomeUser user={user} />} />
                 <Route path="/recintos" element={<Recintos user={user} />} />
                 <Route path="/species-control" element={<SpeciesControl />} />
+                <Route path="/perfil" element={<PerfilPage user={user} />} />
+                <Route path="/controle-reprodutivo" element={<ControleReprodutivo user={user} />} />
                 <Route path="*" element={<Navigate to="/home-user" />} />
+                
               </>
             )}
           </Routes>

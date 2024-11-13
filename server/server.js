@@ -5,12 +5,12 @@ const app = express();
 
 // Habilita CORS para o frontend React
 app.use(cors({
-  origin: 'http://localhost:3000',  // Substitua pela URL do seu frontend
+  origin: 'http://localhost:3000',  
 }));
 app.use(express.json());
 
 // Configurações do Supabase
-const supabaseUrl = 'https://hblarpwdedgzbkigddvy.supabase.co';  // URL do seu Supabase
+const supabaseUrl = 'https://hblarpwdedgzbkigddvy.supabase.co';  
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhibGFycHdkZWRnemJraWdkZHZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgzNjMwMjQsImV4cCI6MjA0MzkzOTAyNH0.JRmP9joPy3YSIga3vTDDPANwUwZOIfqpxsurjRvIa-A';  // Insira sua chave pública do Supabase
 const supabase = createClient(supabaseUrl, supabaseKey);
 
