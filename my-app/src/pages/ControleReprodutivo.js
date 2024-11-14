@@ -8,29 +8,36 @@ const ControleReprodutivo = ({ user }) => {
   const [selectedSpecies1, setSelectedSpecies1] = useState(null);
   const [selectedSpecies2, setSelectedSpecies2] = useState(null);
   const [selectedRecinto, setSelectedRecinto] = useState('');
-  const [gestationPeriod, setGestationPeriod] = useState(null);
   const [message, setMessage] = useState('');
 
-  // Carregar espécies e recintos do usuário
   useEffect(() => {
     const fetchData = async () => {
-      const { data: speciesData } = await supabase
+      const { data: speciesData, error: speciesError } = await supabase
         .from('species')
-        .select('*')
-        .eq('id_user', user.id);
-      setSpecies(speciesData);
+        .select('*');
 
-      const { data: recintosData } = await supabase
+      if (speciesError) {
+        console.error('Erro ao buscar espécies:', speciesError);
+      } else {
+        setSpecies(speciesData);
+      }
+
+      // Carregar recintos do usuário logado
+      const { data: recintosData, error: recintosError } = await supabase
         .from('recintos')
         .select('*')
         .eq('id_user', user.id);
-      setRecintos(recintosData);
+
+      if (recintosError) {
+        console.error('Erro ao buscar recintos:', recintosError);
+      } else {
+        setRecintos(recintosData);
+      }
     };
 
     fetchData();
   }, [user.id]);
 
-  // Verificar e processar a reprodução
   const handleReproduction = async () => {
     if (!selectedSpecies1 || !selectedSpecies2 || !selectedRecinto) {
       setMessage('Selecione duas espécies e um recinto.');
@@ -42,15 +49,9 @@ const ControleReprodutivo = ({ user }) => {
       return;
     }
 
-    if (selectedSpecies1.sexo === selectedSpecies2.sexo) {
-      setMessage('As espécies selecionadas devem ter sexos diferentes.');
-      return;
-    }
 
-    // Definir período de gestação baseado na espécie
     const periodoGestacao = selectedSpecies1.periodo_gestacao;
 
-    // Inserir a reprodução no banco de dados
     const { error } = await supabase
       .from('reproducao')
       .insert({
@@ -71,27 +72,27 @@ const ControleReprodutivo = ({ user }) => {
     <div className="controle-reprodutivo-container">
       <h1>Controle Reprodutivo</h1>
       <div className="species-selection">
-        <h2>Selecione as Espécies para Reprodução</h2>
-        <select onChange={(e) => setSelectedSpecies1(species.find(s => s.id === e.target.value))}>
+        <h2>Selecione as espécies</h2>
+        <select onChange={(e) => setSelectedSpecies1(species.find(s => s.id === parseInt(e.target.value)))}>
           <option value="">Selecione a primeira espécie</option>
           {species.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.nome} - {s.sexo}
+              {s.name} - {s.sex}
             </option>
           ))}
         </select>
-        <select onChange={(e) => setSelectedSpecies2(species.find(s => s.id === e.target.value))}>
+        <select onChange={(e) => setSelectedSpecies2(species.find(s => s.id === parseInt(e.target.value)))}>
           <option value="">Selecione a segunda espécie</option>
           {species.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.nome} - {s.sexo}
+              {s.name} - {s.sex}
             </option>
           ))}
         </select>
       </div>
 
       <div className="recinto-selection">
-        <h2>Selecione o Recinto para o Filhote</h2>
+        <h2>Selecione o recinto para o filhote</h2>
         <select onChange={(e) => setSelectedRecinto(e.target.value)}>
           <option value="">Selecione um recinto</option>
           {recintos.map((r) => (

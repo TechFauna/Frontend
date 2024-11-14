@@ -5,7 +5,7 @@ import './SpeciesControl.css';
 const SpeciesControl = () => {
   const [species, setSpecies] = useState([]);
   const [newSpecies, setNewSpecies] = useState({ name: '', weight: '', sex: '', size: '' });
-  const [loading, setLoading] = useState(false); // Estado de carregamento para melhorar UX
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchSpecies = async () => {
@@ -22,7 +22,7 @@ const SpeciesControl = () => {
 
   const handleAddSpecies = async (e) => {
     e.preventDefault();
-    setLoading(true); // Inicia o carregamento
+    setLoading(true); 
 
     const { name, weight, sex, size } = newSpecies;
 
@@ -30,16 +30,16 @@ const SpeciesControl = () => {
       const { data, error } = await supabase
         .from('species')
         .insert([{ name, weight, sex, size }])
-        .select(); // Garantir que os dados da nova espécie sejam retornados
+        .select();
 
       if (error) throw error;
 
-      setSpecies((prevSpecies) => [...prevSpecies, ...data]); // Atualiza o estado imediatamente
-      setNewSpecies({ name: '', weight: '', sex: '', size: '' }); // Limpa os campos do formulário
+      setSpecies((prevSpecies) => [...prevSpecies, ...data]); 
+      setNewSpecies({ name: '', weight: '', sex: '', size: '' }); 
     } catch (error) {
       console.error('Erro ao adicionar espécie:', error);
     } finally {
-      setLoading(false); // Termina o carregamento
+      setLoading(false); 
     }
   };
 

@@ -1,45 +1,45 @@
-
 .recintos-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  color: #ffffff;
+  color: #d4e2d4;
   text-align: center;
+  font-family: Arial, sans-serif;
 }
 
-/* Título */
 h1, h2 {
   text-align: center;
   color: #ffffff;
   margin-bottom: 20px;
+  font-size: 2.2rem;
 }
 
-/* Mensagens de erro e sucesso */
 .error-message {
-  color: red;
+  color: #ff4c4c;
   text-align: center;
   margin-bottom: 10px;
 }
 
 .success-message {
-  color: green;
+  color: #4caf50;
   text-align: center;
   margin-bottom: 10px;
 }
 
-/* Formulário de criação de recinto sem fundo */
 .create-recinto-form {
   margin-bottom: 20px;
-  color: #ffffff;
-  
+  background-color: #4a5a4f;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Labels e campos de entrada */
 .create-recinto-form label {
   display: block;
   font-weight: bold;
-  color: #ffffff;
+  color: #d4e2d4;
   margin-bottom: 5px;
+  font-size: 1rem;
 }
 
 .create-recinto-form input[type="text"],
@@ -50,29 +50,35 @@ h1, h2 {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #3c4b3c;
+  outline: none;
 }
 
-/* Botão de submissão */
+.create-recinto-form input[type="text"]:focus,
+.create-recinto-form input[type="number"]:focus {
+  border-color: #344d0e;
+}
+
 button[type="submit"] {
   width: 100%;
   padding: 12px;
   border: none;
-  background-color: #344d0e;
-  color: white;
-  font-size: 16px;
+  background-color: #324d0e;
+  color: #ffffff;
+  font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   max-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 button[type="submit"]:hover {
-  background-color: #293b14;
-  max-width: 200px;
+  background-color: #22300b;
 }
 
-/* Barra de pesquisa */
 .search-container {
   display: flex;
   justify-content: center;
@@ -86,37 +92,45 @@ button[type="submit"]:hover {
   max-width: 400px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: #3c4b3c;
+  outline: none;
 }
 
-/* Lista de cards de recintos */
+.search-container input:focus {
+  border-color: #344d0e;
+}
+
 .recintos-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 15px;
 }
 
-/* Estilo dos cards de recinto */
 .recinto-card {
-  background-color: #293b14; /* Cor semelhante à dos cards de espécies */
+  background-color: #293b14;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   color: #ffffff;
-  transition: transform 0.3s ease;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .recinto-card:hover {
   transform: scale(1.05);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .recinto-card h3 {
   color: #ffffff;
   margin-bottom: 10px;
+  font-size: 1.3rem;
 }
 
 .recinto-card p {
   color: #dcdcdc;
   margin: 5px 0;
+  font-size: 1rem;
 }
