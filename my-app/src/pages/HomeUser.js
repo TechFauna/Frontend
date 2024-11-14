@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../supabaseCliente';
 import './HomeUser.css';
+import { VscAccount } from "react-icons/vsc";
 
 function HomeUser({ user }) {
   const [recintos, setRecintos] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Para redirecionar o usuário
+  const navigate = useNavigate(); 
 
   // Função para buscar os recintos do usuário logado
   useEffect(() => {
@@ -28,6 +29,9 @@ function HomeUser({ user }) {
 
   return (
     <div className="home-user-container">
+      <div className="profile-icon" onClick={() => navigate('/perfil')}>
+       <VscAccount />
+      </div>
       <h1>Bem-vindo, {user.nome}!</h1>
       {error && <p className="error-message">{error}</p>}
       

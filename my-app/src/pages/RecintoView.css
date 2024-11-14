@@ -9,6 +9,7 @@
   .recinto-view-container h1 {
     font-size: 2rem;
     margin-bottom: 10px;
+    text-align: center;
   }
   
   .recinto-info,
@@ -27,5 +28,6 @@
   .especie-info p {
     font-size: 1.2rem;
     margin: 5px 0;
+    text-align: center;
   }
   

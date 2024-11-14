@@ -1,9 +1,10 @@
-/* Container principal */
+
 .recintos-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   color: #ffffff;
+  text-align: center;
 }
 
 /* Título */
@@ -30,6 +31,7 @@ h1, h2 {
 .create-recinto-form {
   margin-bottom: 20px;
   color: #ffffff;
+  
 }
 
 /* Labels e campos de entrada */
@@ -62,10 +64,12 @@ button[type="submit"] {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  max-width: 200px;
 }
 
 button[type="submit"]:hover {
   background-color: #293b14;
+  max-width: 200px;
 }
 
 /* Barra de pesquisa */
