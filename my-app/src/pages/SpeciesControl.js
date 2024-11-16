@@ -2,23 +2,29 @@ import React, { useEffect, useState } from 'react';
 import supabase from '../supabaseCliente';
 import './SpeciesControl.css';
 
-const SpeciesControl = () => {
+const SpeciesControl = ({ user }) => {
   const [species, setSpecies] = useState([]);
-  const [newSpecies, setNewSpecies] = useState({ name: '', weight: '', sex: '', size: '' });
+  const [newSpecies, setNewSpecies] = useState({ name: '', weight: '', sex: '', size: '', recinto: '' });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchSpecies = async () => {
-      const { data, error } = await supabase.from('species').select('*');
-      if (error) {
-        console.error('Erro ao carregar espécies:', error);
-      } else {
-        setSpecies(data);
-      }
-    };
+    if (user && user.id) { // Verifica se o user e user.id estão definidos
+      const fetchSpecies = async () => {
+        const { data, error } = await supabase
+          .from('species')
+          .select('*, recintos(nome)')
+          .eq('id_user', user.id); // Filtra as espécies pelo usuário logado
 
-    fetchSpecies();
-  }, []);
+        if (error) {
+          console.error('Erro ao carregar espécies:', error);
+        } else {
+          setSpecies(data);
+        }
+      };
+
+      fetchSpecies();
+    }
+  }, [user]);
 
   const handleAddSpecies = async (e) => {
     e.preventDefault();
@@ -26,20 +32,26 @@ const SpeciesControl = () => {
 
     const { name, weight, sex, size } = newSpecies;
 
+    if (!user || !user.id) { // Verifica se o user e user.id estão definidos antes de prosseguir
+      console.error('Erro: Usuário não está definido.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('species')
-        .insert([{ name, weight, sex, size }])
+        .insert([{ name, weight, sex, size, id_user: user.id }]) // Certifique-se de que user.id está definido
         .select();
 
       if (error) throw error;
 
-      setSpecies((prevSpecies) => [...prevSpecies, ...data]); 
-      setNewSpecies({ name: '', weight: '', sex: '', size: '' }); 
+      setSpecies((prevSpecies) => [...prevSpecies, ...data]);
+      setNewSpecies({ name: '', weight: '', sex: '', size: '' });
     } catch (error) {
       console.error('Erro ao adicionar espécie:', error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -95,9 +107,10 @@ const SpeciesControl = () => {
         {species.map((specie) => (
           <div key={specie.id} className="species-card">
             <h3>{specie.name}</h3>
-            <p className="page-content">Peso: {specie.weight} kg</p>
-            <p className="page-content">Sexo: {specie.sex}</p>
-            <p className="page-content">Tamanho: {specie.size} cm</p>
+            <p>Peso: {specie.weight} kg</p>
+            <p>Sexo: {specie.sex}</p>
+            <p>Tamanho: {specie.size} cm</p>
+            <p>Recinto: {specie.recintos?.nome || 'Não atribuído'}</p>
           </div>
         ))}
       </div>
