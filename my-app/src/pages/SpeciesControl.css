@@ -1,72 +1,72 @@
 .species-control-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
+  background-color: #ded1b6;
+  border-radius: 10px;
+}
+
+.page-title {
+  color: #42282c;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .species-form {
-  width: 100%;
-  max-width: 600px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  background-color: #4a5a4f;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.species-form div {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.species-form label {
-  color: #ffffff;
-  margin-bottom: 5px;
-}
-
-.species-form input, .species-form select {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #3c4b3c;
-  color: #ffffff;
-}
-
-button {
-  width: 30%;
-  padding: 12px;
-  border: none;
-  background-color: #22300b;
-  color: white;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-items: center;
-}
-
-button:hover {
-  background-color: #0d1305;
 }
 
 .species-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 800px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin: 12px;
 }
 
 .species-card {
-  background-color: #4a5a4f;
-  padding: 15px;
-  border-radius: 8px;
-  color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background-color: #84abaa;
+  padding: 20px;
+  border-radius: 10px;
   text-align: center;
+  color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.species-card:hover {
+  transform: scale(1.05);
+}
+
+.species-card h3 {
+  color: #42282c;
+  margin-bottom: 10px;
+}
+
+.species-form label {
+  margin-top: 10px;
+  color: #6d997a;
+}
+
+.species-form input, .species-form select {
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #6ca19e;
+}
+
+button {
+  padding: 12px;
+  background-color: #6ca19e;
+  color: #ffffff;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #84abaa;
 }

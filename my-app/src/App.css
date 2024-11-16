@@ -1,136 +1,66 @@
-/* Estilos Globais */
-body {
+/* Fonte global */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap');
+
+* {
+  font-family: 'Lexend', sans-serif;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #344d0e; /* Cor principal */
+  box-sizing: border-box;
 }
 
-/* Estilo da Sidebar (Menu Lateral) */
+body {
+  background-color: #ded1b6; /* Fundo pastel claro */
+  color: #42282c; /* Texto escuro */
+}
+
+/* Barra lateral */
 .sidebar {
-  height: 100vh;
-  width: 400px;
-  background-color: #22300b; /* Cor principal modificada */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
+  background-color: #42282c; /* Verde pastel escuro */
+  width: 200px;
   position: fixed;
+  height: 100%;
+  padding-top: 20px;
+  text-align: center;
+  transition: width 0.3s;
 }
 
 .sidebar a {
-  text-align: center;
+  display: block;
+  color: #ffffff;
+  padding: 15px;
   text-decoration: none;
-  color: white; /* Cor dos textos */
-  font-size: 20px;
-  margin: 10px 0;
-  padding: 10px 20px;
-  width: 100%;
-  background-color: #293b14; /* Cor do hover */
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  transition: background 0.3s;
 }
 
 .sidebar a:hover {
-  background-color: #22300b;
+  background-color: #84abaa; /* Efeito de hover */
 }
 
-.sidebar button {
-  background-color: #22300b;
-  border: none;
-  color: rgb(255, 0, 0);
-  font-size: 20px;
-  margin: 10px 0;
-  padding: 10px 20px;
-  width: 100%;
-  text-align: center;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+.logout {
+  color: #ff0000;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
-.sidebar button:hover {
-  background-color: #293b14;
-}
-
-/* Estilo da Navbar */
-.navbar {
-  background-color: #2e4705;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  position: fixed;
-  top: 0;
-  left: 250px;
-  width: calc(100% - 250px);
-  z-index: 10;
-}
-
-.navbar h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: white;
-}
-
-/* Estilos da Main Content */
 .main-content {
-  margin-left: 250px;
-  padding: 40px;
-  padding-top: 80px; 
-  background-color: #344d0e; 
+  margin-left: 200px; /* Espaço da barra lateral */
+  padding: 20px;
 }
 
-.center-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
 
-/* Estilos do Formulário de Login e Registro */
-.login-register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.login-form, .register-form {
-  background-color: #ffffff;
-  padding: 30px;
+.card {
+  background-color: #6ca19e;
   border-radius: 10px;
-  box-shadow: 0px 5px 15px #22300b; /* Sombra */
-  max-width: 400px;
-  width: 100%;
-}
-
-
-
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-
-/* Estilos Específicos para Links no Formulário */
-.login-register-container a {
-  color: #22300b; 
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.2rem;
   text-align: center;
-  display: block;
-  margin-top: 15px;
-  text-decoration: none;
-  font-size: 14px;
+  transition: transform 0.3s, background-color 0.3s;
 }
 
-/* Estilos para a página de Recintos e Controle de Espécies */
-.page-title {
-  color: white; 
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-align: center;
+.card:hover {
+  transform: scale(1.05);
+  background-color: #84abaa;
 }
-

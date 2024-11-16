@@ -1,110 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../supabaseCliente';
+import StyledInput from '../components/StyledInput';
+import StyledButton from '../components/StyledButton';
 import './ControleReprodutivo.css';
 
 const ControleReprodutivo = ({ user }) => {
   const [species, setSpecies] = useState([]);
-  const [recintos, setRecintos] = useState([]);
-  const [selectedSpecies1, setSelectedSpecies1] = useState(null);
-  const [selectedSpecies2, setSelectedSpecies2] = useState(null);
+  const [selectedSpecies1, setSelectedSpecies1] = useState('');
+  const [selectedSpecies2, setSelectedSpecies2] = useState('');
   const [selectedRecinto, setSelectedRecinto] = useState('');
-  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data: speciesData, error: speciesError } = await supabase
-        .from('species')
-        .select('*');
-
-      if (speciesError) {
-        console.error('Erro ao buscar espécies:', speciesError);
-      } else {
-        setSpecies(speciesData);
-      }
-
-      // Carregar recintos do usuário logado
-      const { data: recintosData, error: recintosError } = await supabase
-        .from('recintos')
-        .select('*')
-        .eq('id_user', user.id);
-
-      if (recintosError) {
-        console.error('Erro ao buscar recintos:', recintosError);
-      } else {
-        setRecintos(recintosData);
-      }
+    const fetchSpecies = async () => {
+      const { data } = await supabase.from('species').select('*').eq('id_user', user.id);
+      setSpecies(data || []);
     };
-
-    fetchData();
+    fetchSpecies();
   }, [user.id]);
 
   const handleReproduction = async () => {
-    if (!selectedSpecies1 || !selectedSpecies2 || !selectedRecinto) {
-      setMessage('Selecione duas espécies e um recinto.');
-      return;
-    }
-
-    if (selectedSpecies1.nome !== selectedSpecies2.nome) {
-      setMessage('As espécies selecionadas devem ser da mesma espécie.');
-      return;
-    }
-
-
-    const periodoGestacao = selectedSpecies1.periodo_gestacao;
-
-    const { error } = await supabase
-      .from('reproducao')
-      .insert({
-        id_especie1: selectedSpecies1.id,
-        id_especie2: selectedSpecies2.id,
-        id_recinto: selectedRecinto,
-        periodo_gestacao: periodoGestacao,
-      });
-
-    if (error) {
-      setMessage('Erro ao registrar reprodução.');
-    } else {
-      setMessage(`Reprodução registrada! Período de gestação: ${periodoGestacao} dias.`);
-    }
+    // Lógica para iniciar reprodução
   };
 
   return (
     <div className="controle-reprodutivo-container">
       <h1>Controle Reprodutivo</h1>
-      <div className="species-selection">
-        <h2>Selecione as espécies</h2>
-        <select onChange={(e) => setSelectedSpecies1(species.find(s => s.id === parseInt(e.target.value)))}>
+      <div>
+        <StyledInput as="select" value={selectedSpecies1} onChange={(e) => setSelectedSpecies1(e.target.value)}>
           <option value="">Selecione a primeira espécie</option>
           {species.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.name} - {s.sex}
+              {s.nome} - {s.sexo}
             </option>
           ))}
-        </select>
-        <select onChange={(e) => setSelectedSpecies2(species.find(s => s.id === parseInt(e.target.value)))}>
+        </StyledInput>
+      </div>
+      <div>
+        <StyledInput as="select" value={selectedSpecies2} onChange={(e) => setSelectedSpecies2(e.target.value)}>
           <option value="">Selecione a segunda espécie</option>
           {species.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.name} - {s.sex}
+              {s.nome} - {s.sexo}
             </option>
           ))}
-        </select>
+        </StyledInput>
       </div>
-
-      <div className="recinto-selection">
-        <h2>Selecione o recinto para o filhote</h2>
-        <select onChange={(e) => setSelectedRecinto(e.target.value)}>
+      <div>
+        <StyledInput as="select" value={selectedRecinto} onChange={(e) => setSelectedRecinto(e.target.value)}>
           <option value="">Selecione um recinto</option>
-          {recintos.map((r) => (
-            <option key={r.id_recinto} value={r.id_recinto}>
-              {r.nome}
-            </option>
-          ))}
-        </select>
+          {/* Mapear recintos aqui */}
+        </StyledInput>
       </div>
-
-      <button onClick={handleReproduction}>Iniciar Reprodução</button>
-      {message && <p className="message">{message}</p>}
+      <StyledButton onClick={handleReproduction}>Iniciar Reprodução</StyledButton>
     </div>
   );
 };

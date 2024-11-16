@@ -2,44 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../supabaseCliente';
 import './HomeUser.css';
-import { VscAccount } from "react-icons/vsc";
 
 function HomeUser({ user }) {
-  const [recintos, setRecintos] = useState([]);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
+  const [userNome, setUserNome] = useState('');
+  const [userFotoPerfil, setUserFotoPerfil] = useState('');
+  const navigate = useNavigate();
 
-  // Função para buscar os recintos do usuário logado
   useEffect(() => {
-    const fetchRecintos = async () => {
+    const fetchUserData = async () => {
       const { data, error } = await supabase
-        .from('recintos')
-        .select('*')
-        .eq('id_user', user.id);
+        .from('perfil')
+        .select('nome, foto_perfil')
+        .eq('id_user', user.id)
+        .single();
 
-      if (error) {
-        setError('Erro ao buscar os recintos do usuário.');
+      if (data) {
+        setUserNome(data.nome);
+        setUserFotoPerfil(data.foto_perfil || '/images/imagem_usuario_padrao.png');
       } else {
-        setRecintos(data);
+        console.error('Erro ao carregar dados do usuário:', error.message);
       }
     };
 
-    fetchRecintos();
+    fetchUserData();
   }, [user.id]);
 
   return (
     <div className="home-user-container">
-      <div className="profile-icon" onClick={() => navigate('/perfil')}>
-       <VscAccount />
+      <div className="user-info">
+        <img
+          src={userFotoPerfil}
+          alt="Foto de Perfil"
+          className="profile-photo"
+          onClick={() => navigate('/perfil')}
+        />
+        <h1>Bem-vindo, {userNome}!</h1>
       </div>
-      <h1>Bem-vindo, {user.nome}!</h1>
-      {error && <p className="error-message">{error}</p>}
-      
       <div className="card-container">
         <div className="card" onClick={() => navigate('/recintos')}>
-          <h2>Você possui</h2>
-          <p>{recintos.length} recintos</p>
-          <p className="card-back">Clique para ver detalhes</p>
+          <h2>Recintos</h2>
+          <p>Visualizar recintos</p>
+        </div>
+        <div className="card" onClick={() => navigate('/species-control')}>
+          <h2>Espécies</h2>
+          <p>Gerenciar espécies</p>
+        </div>
+        <div className="card" onClick={() => navigate('/controle-reprodutivo')}>
+          <h2>Controle Reprodutivo</h2>
+          <p>Acompanhar reprodução</p>
         </div>
       </div>
     </div>

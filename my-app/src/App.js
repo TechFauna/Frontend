@@ -1,5 +1,6 @@
+// App.js
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import supabase from './supabaseCliente';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -9,6 +10,7 @@ import Recintos from './pages/Recintos';
 import SpeciesControl from './pages/SpeciesControl';
 import ControleReprodutivo from './pages/ControleReprodutivo';
 import PerfilPage from './pages/PerfilPage';
+import Sidebar from './components/Sidebar';
 import './App.css';
 
 function App() {
@@ -31,25 +33,7 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <aside className="sidebar">
-          <nav>
-            <Link to="/home">Home</Link>
-            {!user ? (
-              <>
-                <Link to="/login">Login</Link>
-                <Link to="/register">Registrar</Link>
-              </>
-            ) : (
-              <>
-                <Link to="/recintos">Recintos</Link>
-                <Link to="/species-control">Espécies</Link>
-                <Link to="/controle-reprodutivo">Controle Reprodutivo</Link>
-                <button onClick={handleLogout}>Logout</button>
-              </>
-            )}
-          </nav>
-        </aside>
-
+        <Sidebar user={user} onLogout={handleLogout} />
         <div className={`main-content ${user ? '' : 'center-content'}`}>
           <Routes>
             {!user ? (
@@ -57,7 +41,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Login onLogin={(user) => setUser(user)} />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="*" element={<Navigate to="/home-user" />} />
+                <Route path="*" element={<Navigate to="/home" />} />
               </>
             ) : (
               <>
@@ -67,7 +51,6 @@ function App() {
                 <Route path="/perfil" element={<PerfilPage user={user} />} />
                 <Route path="/controle-reprodutivo" element={<ControleReprodutivo user={user} />} />
                 <Route path="*" element={<Navigate to="/home-user" />} />
-                
               </>
             )}
           </Routes>
