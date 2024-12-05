@@ -12,7 +12,6 @@ function Sidebar({ user, onLogout }) {
           <Link to="/recintos">Recintos</Link>
           <Link to="/species-control">Espécies</Link>
           <Link to="/controle-reprodutivo">Controle Reprodutivo</Link>
-          <Link to="/perfil">Perfil</Link>
           <button onClick={onLogout}>Logout</button>
         </>
       ) : (
