@@ -9,7 +9,8 @@ import HomeUser from './pages/HomeUser';
 import Recintos from './pages/Recintos';
 import SpeciesControl from './pages/SpeciesControl';
 import ControleReprodutivo from './pages/ControleReprodutivo';
-import PerfilPage from './pages/PerfilPage';
+import RecintoView from './pages/RecintoView';
+
 import Sidebar from './components/Sidebar';
 import './App.css';
 
@@ -47,10 +48,10 @@ function App() {
               <>
                 <Route path="/home-user" element={<HomeUser user={user} />} />
                 <Route path="/recintos" element={<Recintos user={user} />} />
-                <Route path="/species-control" element={<SpeciesControl />} />
-                <Route path="/perfil" element={<PerfilPage user={user} />} />
+                <Route path="/recinto-view/:id" element={<RecintoView user={user} />} />
+                <Route path="/species-control" element={<SpeciesControl user={user}/>} />
                 <Route path="/controle-reprodutivo" element={<ControleReprodutivo user={user} />} />
-                <Route path="*" element={<Navigate to="/home-user" />} />
+                <Route path="*" element={<Navigate to="/home-user" user={user}/>} />
               </>
             )}
           </Routes>

@@ -7,6 +7,25 @@ function RecintoView() {
   const { id } = useParams();
   const [recinto, setRecinto] = useState(null);
   const [especieDetalhes, setEspecieDetalhes] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const handleUpdateRecinto = async () => {
+    const { error } = await supabase
+      .from('recintos')
+      .update({
+        nome: recinto.nome,
+        qnt_animais: recinto.qnt_animais,
+      })
+      .eq('id_recinto', recinto.id_recinto);
+  
+    if (error) {
+      console.error('Erro ao atualizar recinto:', error);
+      alert('Erro ao atualizar o recinto.');
+    } else {
+      alert('Recinto atualizado com sucesso!');
+    }
+  };
+
 
   useEffect(() => {
     const fetchRecinto = async () => {
@@ -24,9 +43,9 @@ function RecintoView() {
 
           // Buscar informações da espécie associada
           const { data: especieData, error: especieError } = await supabase
-            .from('species') // Certifique-se de que a tabela é 'species'
+            .from('species')
             .select('*')
-            .eq('name', recintoData.especie)
+            .eq('name', recintoData?.especie)
             .single();
 
           if (especieError) {
@@ -37,29 +56,38 @@ function RecintoView() {
         }
       } catch (error) {
         console.error('Erro inesperado ao buscar dados do recinto:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRecinto();
   }, [id]);
 
-  if (!recinto || !especieDetalhes) return <div>Carregando...</div>;
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
+  if (!recinto) {
+    return <div>Erro ao carregar os dados do recinto. Tente novamente mais tarde.</div>;
+  }
+  
   return (
     <div className="recinto-view-container">
-      <h1>{recinto.nome}</h1>
-      <div className="recinto-info">
-        <p>Espécie: {recinto.especie}</p>
-        <p>Quantidade de Animais: {recinto.qnt_animais}</p>
-      </div>
-      <h2>Detalhes da Espécie</h2>
-      <div className="especie-info">
-        <p>Peso: {especieDetalhes.weight} kg</p>
-        <p>Sexo: {especieDetalhes.sex}</p>
-        <p>Tamanho: {especieDetalhes.size} cm</p>
-      </div>
+      <h1>Editar Recinto</h1>
+      <input
+        type="text"
+        value={recinto.nome}
+        onChange={(e) => setRecinto({ ...recinto, nome: e.target.value })}
+      />
+      <input
+        type="number"
+        value={recinto.qnt_animais}
+        onChange={(e) => setRecinto({ ...recinto, qnt_animais: e.target.value })}
+      />
+      <button onClick={handleUpdateRecinto}>Salvar Alterações</button>
     </div>
   );
-}
+}  
 
 export default RecintoView;
