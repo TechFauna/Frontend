@@ -7,18 +7,31 @@ function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [handleClick] = useState
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
+  
+    const { data: user, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+  
     if (error) {
-      setErrorMessage('Credenciais inválidas. Verifique seu email e senha.');
+      setError('Erro ao fazer login. Verifique suas credenciais.');
     } else {
-      setErrorMessage('');
-      onLogin(data.user);
+      setError('');
+      setSuccessMessage('Login realizado com sucesso! Redirecionando...');
+      setTimeout(() => {
+        window.location.href = '/home-user';
+      }, 2000);
     }
   };
+  
 
   return (
     <div className="login-container">
@@ -42,8 +55,9 @@ function Login({ onLogin }) {
           />
           <button type="submit">Entrar</button>
         </form>
-        <p>
-          Esqueceu sua senha? <a href="#">Clique aqui</a>
+        <p>Esqueceu sua senha? <a href="#" onClick={handleClick} role='button'>
+            Clique aqui
+            </a>
         </p>
       </div>
     </div>

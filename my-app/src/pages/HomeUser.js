@@ -38,7 +38,7 @@ function HomeUser({ user }) {
           className="profile-photo"
           onClick={() => navigate("/perfil")}
         />
-        <h1>Bem-vindo(a), {userNome}!</h1>
+        <p>Bem-vindo(a), {userNome}!</p>
       </div>
       <div className="card-container">
         <div className="card" onClick={() => navigate("/recintos")}>

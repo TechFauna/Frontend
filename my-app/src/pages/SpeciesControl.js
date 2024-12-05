@@ -1,59 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import supabase from '../supabaseCliente';
+import './SpeciesControl.css';
 
 const SpeciesControl = ({ user }) => {
   const [species, setSpecies] = useState([]);
-  const [name, setName] = useState('');
-  const [weight, setWeight] = useState('');
-  const [sex, setSex] = useState('');
-  const [size, setSize] = useState('');
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [recintos, setRecintos] = useState([]);
+  const [newSpecies, setNewSpecies] = useState({
+    name: '',
+    weight: '',
+    sex: '',
+    size: '',
+    recinto: '',
+  });
+  const [loading, setLoading] = useState(false);
 
-  // Busca as espécies relacionadas ao usuário autenticado
+  // Carregar espécies do usuário logado
   useEffect(() => {
     const fetchSpecies = async () => {
-      setError(null); // Reseta qualquer erro antes de carregar
-      try {
-        if (!user || !user.id) {
-          setError('Usuário não autenticado. Por favor, faça login novamente.');
-          return;
-        }
-
+      if (user?.id) {
         const { data, error } = await supabase
           .from('species')
-          .select('*')
+          .select('*, recintos(nome)')
           .eq('id_user', user.id);
 
-        if (error) throw error;
-
-        setSpecies(data || []);
-      } catch (err) {
-        console.error('Erro ao buscar espécies:', err.message);
-        setError('Erro ao carregar espécies. Tente novamente mais tarde.');
+          if (error) {
+            console.error('Erro ao carregar espécies:', error);
+          } else if (Array.isArray(data)) {
+            setSpecies(data);
+          } else {
+            console.warn('Formato inesperado ao buscar espécies:', data);
+            setSpecies([]);
+          }
       }
     };
 
     fetchSpecies();
   }, [user]);
 
-  // Adiciona uma nova espécie ao banco de dados
-  const addSpecies = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
+  // Carregar recintos do usuário logado
+  useEffect(() => {
+    const fetchRecintos = async () => {
+      if (user?.id) {
+        const { data, error } = await supabase
+          .from('recintos')
+          .select('id_recinto, nome')
+          .eq('id_user', user.id);
 
-    if (!name || !weight || !sex || !size) {
-      setError('Todos os campos são obrigatórios.');
+        if (error) {
+          console.error('Erro ao carregar recintos:', error);
+        } else {
+          setRecintos(data || []);
+        }
+      }
+    };
+
+    fetchRecintos();
+  }, [user]);
+
+  // Adicionar uma nova espécie
+  const handleAddSpecies = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { name, weight, sex, size, recinto } = newSpecies;
+
+    if (!recinto) {
+      alert('Por favor, selecione um recinto.');
+      setLoading(false);
       return;
     }
 
     try {
-      if (!user || !user.id) {
-        setError('Usuário não autenticado. Por favor, faça login novamente.');
-        return;
-      }
-
       const { data, error } = await supabase
         .from('species')
         .insert([
@@ -62,99 +79,101 @@ const SpeciesControl = ({ user }) => {
             weight: parseFloat(weight),
             sex,
             size: parseFloat(size),
-            id_user: user.id, // Vincula a espécie ao usuário autenticado
+            id_user: user.id,
+            id_recinto: recinto,
           },
         ])
         .select();
 
       if (error) throw error;
 
-      // Atualiza a lista de espécies
-      setSpecies((prev) => [...prev, ...data]);
-      setName('');
-      setWeight('');
-      setSex('');
-      setSize('');
-      setSuccessMessage('Espécie adicionada com sucesso!');
-    } catch (err) {
-      console.error('Erro ao adicionar espécie:', err.message);
-      setError('Erro ao adicionar espécie. Verifique os dados e tente novamente.');
-    }
-  };
-
-  // Exclui uma espécie do banco de dados
-  const deleteSpecies = async (id) => {
-    setError(null);
-    setSuccessMessage(null);
-
-    try {
-      if (!user || !user.id) {
-        setError('Usuário não autenticado. Por favor, faça login novamente.');
-        return;
+      if (Array.isArray(data)) {
+        setSpecies((prev) => [...prev, ...data]);
+      } else {
+        console.warn('Nenhuma espécie foi adicionada:', data);
       }
 
-      const { error } = await supabase
-        .from('species')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      // Remove a espécie do estado local
-      setSpecies((prev) => prev.filter((specie) => specie.id !== id));
-      setSuccessMessage('Espécie excluída com sucesso!');
-    } catch (err) {
-      console.error('Erro ao excluir espécie:', err.message);
-      setError('Erro ao excluir espécie. Tente novamente.');
+      setSpecies((prev) => [...prev, ...data]);
+      setNewSpecies({ name: '', weight: '', sex: '', size: '', recinto: '' });
+      alert('Espécie adicionada com sucesso!');
+    } catch (error) {
+      console.error('Erro ao adicionar espécie:', error);
+      alert('Erro ao adicionar espécie.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Controle de Espécies</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-
-      <form onSubmit={addSpecies}>
-        <h2>Adicionar Nova Espécie</h2>
+    <div className="species-control-container">
+      <h1 className="page-title">Controle de Espécies</h1>
+      <form onSubmit={handleAddSpecies} className="species-form">
+        <label>Nome:</label>
         <input
           type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={newSpecies.name}
+          onChange={(e) => setNewSpecies({ ...newSpecies, name: e.target.value })}
           required
         />
+
+        <label>Peso (kg):</label>
         <input
           type="number"
-          placeholder="Peso (kg)"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          value={newSpecies.weight}
+          onChange={(e) => setNewSpecies({ ...newSpecies, weight: e.target.value })}
           required
         />
-        <select value={sex} onChange={(e) => setSex(e.target.value)} required>
-          <option value="">Selecione o Sexo</option>
+
+        <label>Sexo:</label>
+        <select
+          value={newSpecies.sex}
+          onChange={(e) => setNewSpecies({ ...newSpecies, sex: e.target.value })}
+          required
+        >
+          <option value="">Selecione</option>
           <option value="M">Macho</option>
           <option value="F">Fêmea</option>
         </select>
+
+        <label>Tamanho (cm):</label>
         <input
           type="number"
-          placeholder="Tamanho (cm)"
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
+          value={newSpecies.size}
+          onChange={(e) => setNewSpecies({ ...newSpecies, size: e.target.value })}
           required
         />
-        <button type="submit">Adicionar Espécie</button>
+
+        <label>Recinto:</label>
+        <select
+          value={newSpecies.recinto}
+          onChange={(e) => setNewSpecies({ ...newSpecies, recinto: e.target.value })}
+          required
+        >
+          <option value="">Selecione um recinto</option>
+          {recintos.map((recinto) => (
+            <option key={recinto.id_recinto} value={recinto.id_recinto}>
+              {recinto.nome}
+            </option>
+          ))}
+        </select>
+
+        <button type="submit" disabled={loading}>
+          {loading ? 'Adicionando...' : 'Adicionar Espécie'}
+        </button>
       </form>
 
       <h2>Espécies Cadastradas</h2>
-      <ul>
+      <div className="species-list">
         {species.map((specie) => (
-          <li key={specie.id}>
-            {specie.name} - {specie.sex} - {specie.weight}kg - {specie.size}cm
-            <button onClick={() => deleteSpecies(specie.id)}>Excluir</button>
-          </li>
+          <div key={specie.id} className="species-card">
+            <h3>{specie.name}</h3>
+            <p>Peso: {specie.weight} kg</p>
+            <p>Sexo: {specie.sex}</p>
+            <p>Tamanho: {specie.size} cm</p>
+            <p>Recinto: {specie.recintos?.nome || 'Não atribuído'}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

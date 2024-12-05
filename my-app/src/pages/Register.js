@@ -12,23 +12,36 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signUp({
+    const { data: user, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name } },
     });
-
+  
     if (error) {
       setErrorMessage('Erro ao cadastrar. Email já utilizado ou dados inválidos.');
     } else {
-      setErrorMessage('');
-      setSuccessMessage('Cadastro realizado com sucesso! Redirecionando...');
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 2000);
+      // Salvar o perfil na tabela "perfil"
+      const { error: profileError } = await supabase
+        .from('perfil')
+        .insert({
+          id_user: user.user?.id,
+          nome: name,
+          email,
+        });
+  
+      if (profileError) {
+        setErrorMessage('Erro ao salvar dados no perfil. Tente novamente.');
+      } else {
+        setErrorMessage('');
+        setSuccessMessage('Cadastro realizado com sucesso! Redirecionando...');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      }
     }
   };
-
+  
   return (
     <div className="register-container">
       <div className="register-card">
