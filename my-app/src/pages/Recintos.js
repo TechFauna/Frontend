@@ -104,7 +104,7 @@ const Recintos = ({ user }) => {
           onChange={(e) => setNomeRecinto(e.target.value)}
           required
         />
-        <label>Animal:</label>
+        <label>Espécie:</label>
         <input
           type="text"
           placeholder="Ex: Leão"
@@ -142,7 +142,7 @@ const Recintos = ({ user }) => {
           >
             <h3>{recinto.nome}</h3>
             <p>Espécie: {recinto.especie}</p>
-            <p>Quantidade de Animais: {recinto.qnt_animais}</p>
+            <p>Quantidade de Espécies: {recinto.qnt_animais}</p>
           </div>
         ))}
       </div>

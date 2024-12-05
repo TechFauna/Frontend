@@ -2,7 +2,7 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #ded1b6;
+  background-color: #fdfaf5;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Lexend', sans-serif;
@@ -50,17 +50,6 @@ button.reproducao-button:hover {
   background-color: #84abaa;
 }
 
-.gestation-period {
-  text-align: center;
-  color: #42282c;
-  font-size: 1.2rem;
-  margin-top: 20px;
-}
-
-.active-gestations {
-  margin-top: 20px;
-}
-
 .gestation-card {
   background-color: #ffffff;
   padding: 15px;
@@ -74,6 +63,12 @@ button.reproducao-button:hover {
   margin: 5px 0;
   font-size: 1rem;
   color: #42282c;
+}
+
+.gestation-status {
+  font-weight: bold;
+  color: #6ca19e;
+  margin-top: 10px;
 }
 
 .no-gestations {

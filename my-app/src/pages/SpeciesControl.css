@@ -1,103 +1,26 @@
-.species-control-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ded1b6;
-  border-radius: 10px;
-}
-
-.page-title {
-  color: #42282c;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.species-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.species-form label {
-  font-size: 1rem;
-  color: #6d997a;
-}
-
-.species-form input,
-.species-form select {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #6ca19e;
-  background-color: #f5f5f5;
-}
-
-button {
-  padding: 12px;
-  background-color: #6ca19e;
-  color: #ffffff;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #84abaa;
-}
-
-.species-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
-}
-
 .species-card {
-  background-color: #84abaa;
+  background-color: #84abaa; /* Mantém a cor original dos cards */
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   color: #ffffff;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 10px auto;
+  max-width: 300px; /* Tamanho do card */
 }
 
-.species-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+.species-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centraliza os cards */
+  gap: 20px; /* Espaçamento entre os cards */
 }
 
-.species-card h3 {
-  color: #42282c;
-  margin-bottom: 10px;
-}
-
-.species-card p {
-  margin: 5px 0;
-  font-size: 0.9rem;
-  color: #f0f0f0;
-}
-
-.species-photo {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
+.species-control-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff; /* Fundo branco */
   border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.species-card button {
-  background-color: #e57373;
-  color: white;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
-}
-
-.species-card button:hover {
-  background-color: #d32f2f;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }

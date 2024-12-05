@@ -1,85 +1,134 @@
-import React, { useState, useEffect } from 'react';
-import supabase from '../supabaseCliente';
-import './ControleReprodutivo.css';
+import React, { useState, useEffect } from "react";
+import supabase from "../supabaseCliente";
+import "./ControleReprodutivo.css";
 
 const ControleReprodutivo = ({ user }) => {
   const [species, setSpecies] = useState([]);
   const [recintos, setRecintos] = useState([]);
-  const [randomMales, setRandomMales] = useState([]);
-  const [randomFemales, setRandomFemales] = useState([]);
-  const [selectedMale, setSelectedMale] = useState('');
-  const [selectedFemale, setSelectedFemale] = useState('');
-  const [selectedRecinto, setSelectedRecinto] = useState('');
-  const [gestationPeriod, setGestationPeriod] = useState('');
-  const [activeGestations, setActiveGestations] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [selectedSpecies, setSelectedSpecies] = useState("");
+  const [selectedRecinto, setSelectedRecinto] = useState("");
+  const [gestations, setGestations] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: speciesData } = await supabase
-        .from('species')
-        .select('*')
-        .eq('id_user', user.id);
+      try {
+        const { data: speciesData } = await supabase
+          .from("species")
+          .select("*")
+          .eq("id_user", user.id);
 
-      const { data: recintosData } = await supabase
-        .from('recintos')
-        .select('*')
-        .eq('id_user', user.id);
+        const { data: recintosData } = await supabase
+          .from("recintos")
+          .select("*")
+          .eq("id_user", user.id);
 
-      const { data: gestationsData } = await supabase
-        .from('reproducao')
-        .select('*')
-        .eq('id_user_dono', user.id);
+        const { data: gestationsData } = await supabase
+          .from("reproducao")
+          .select("*")
+          .eq("id_user", user.id);
 
-      setSpecies(speciesData || []);
-      setRecintos(recintosData || []);
-      setActiveGestations(gestationsData || []);
-
-      // Seleciona aleatoriamente 4 machos e 4 fêmeas
-      const males = speciesData.filter((s) => s.sexo === 'M');
-      const females = speciesData.filter((s) => s.sexo === 'F');
-      setRandomMales(males.sort(() => 0.5 - Math.random()).slice(0, 4));
-      setRandomFemales(females.sort(() => 0.5 - Math.random()).slice(0, 4));
+        setSpecies(speciesData || []);
+        setRecintos(recintosData || []);
+        setGestations(gestationsData || []);
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error.message);
+        setErrorMessage("Erro ao carregar dados. Tente novamente mais tarde.");
+      }
     };
 
     fetchData();
   }, [user.id]);
 
   const handleReproduction = async () => {
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    if (!selectedMale || !selectedFemale || !selectedRecinto) {
-      setErrorMessage('Por favor, preencha todos os campos.');
+    if (!selectedSpecies || !selectedRecinto) {
+      setErrorMessage("Por favor, selecione uma espécie e um recinto.");
       return;
     }
 
     try {
-      const male = randomMales.find((s) => s.id === parseInt(selectedMale));
-      const female = randomFemales.find((s) => s.id === parseInt(selectedFemale));
-      const period = Math.max(male.periodo_gestacao, female.periodo_gestacao);
+      // Define o status inicial como "Em andamento"
+      const startDate = new Date().toISOString();
 
-      const { error } = await supabase.from('reproducao').insert([
+      // Insere os dados na tabela `reproducao`
+      const { error } = await supabase.from("reproducao").insert([
         {
-          id_especie1: selectedMale,
-          id_especie2: selectedFemale,
-          data_criacao: new Date(),
-          periodo_gestacao: period,
+          id_especie: selectedSpecies,
           id_recinto: selectedRecinto,
-          id_user_dono: user.id,
+          data_inicio: startDate,
+          status: "Em andamento",
+          filhotes_gerados: 0, // Inicialmente 0
+          id_user: user.id,
         },
       ]);
 
       if (error) throw error;
 
-      setGestationPeriod(period);
-      setSuccessMessage('Reprodução registrada com sucesso!');
+      // Atualiza a lista de gestações
+      setGestations((prev) => [
+        ...prev,
+        {
+          id_especie: selectedSpecies,
+          id_recinto: selectedRecinto,
+          data_inicio: startDate,
+          status: "Em andamento",
+          filhotes_gerados: 0,
+        },
+      ]);
+
+      setSuccessMessage("Reprodução iniciada com sucesso!");
     } catch (error) {
-      setErrorMessage('Erro ao registrar reprodução.');
-      console.error(error);
+      setErrorMessage("Erro ao iniciar reprodução. Tente novamente.");
+      console.error("Erro ao iniciar reprodução:", error.message);
     }
   };
+
+  const updateGestationStatus = () => {
+    setGestations((prev) =>
+      prev.map((gestation) => {
+        const timeElapsed = Math.floor(
+          (new Date() - new Date(gestation.data_inicio)) / (1000 * 60 * 60 * 24)
+        );
+
+        if (timeElapsed >= 5 && gestation.status === "Em andamento") {
+          // Atualiza o status para "Concluído" e incrementa os filhotes no banco
+          (async () => {
+            try {
+              await supabase
+                .from("reproducao")
+                .update({ status: "Concluído", filhotes_gerados: gestation.filhotes_gerados + 1 })
+                .eq("id_recinto", gestation.id_recinto)
+                .eq("id_especie", gestation.id_especie);
+
+              const recinto = recintos.find((r) => r.id_recinto === gestation.id_recinto);
+
+              await supabase
+                .from("recintos")
+                .update({
+                  qnt_animais: parseInt(recinto.qnt_animais) + 1,
+                })
+                .eq("id_recinto", gestation.id_recinto);
+            } catch (error) {
+              console.error("Erro ao atualizar status no banco:", error.message);
+            }
+          })();
+
+          return { ...gestation, status: "Concluído", filhotes_gerados: gestation.filhotes_gerados + 1 };
+        }
+
+        return gestation;
+      })
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(updateGestationStatus, 10000); // Atualiza o status a cada 10 segundos
+    return () => clearInterval(interval);
+  }, [gestations]);
 
   return (
     <div className="controle-reprodutivo-container">
@@ -88,41 +137,23 @@ const ControleReprodutivo = ({ user }) => {
       {successMessage && <p className="success-message">{successMessage}</p>}
 
       <div className="form-group">
-        <label htmlFor="male">Selecionar macho:</label>
+        <label>Selecionar Espécie:</label>
         <select
-          id="male"
-          value={selectedMale}
-          onChange={(e) => setSelectedMale(e.target.value)}
+          value={selectedSpecies}
+          onChange={(e) => setSelectedSpecies(e.target.value)}
         >
-          <option value="">Selecione um macho</option>
-          {randomMales.map((s) => (
+          <option value="">Selecione uma espécie</option>
+          {species.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.name} - Recinto: {recintos.find((r) => r.id_recinto === s.id_recinto)?.nome || 'Não informado'}
+              {s.name}
             </option>
           ))}
         </select>
       </div>
 
       <div className="form-group">
-        <label htmlFor="female">Selecionar fêmea:</label>
+        <label>Selecionar Recinto:</label>
         <select
-          id="female"
-          value={selectedFemale}
-          onChange={(e) => setSelectedFemale(e.target.value)}
-        >
-          <option value="">Selecione uma fêmea</option>
-          {randomFemales.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name} - Recinto: {recintos.find((r) => r.id_recinto === s.id_recinto)?.nome || 'Não informado'}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="recinto">Selecionar recinto:</label>
-        <select
-          id="recinto"
           value={selectedRecinto}
           onChange={(e) => setSelectedRecinto(e.target.value)}
         >
@@ -139,20 +170,26 @@ const ControleReprodutivo = ({ user }) => {
         Iniciar Reprodução
       </button>
 
-      {gestationPeriod && (
-        <p className="gestation-period">Período estimado de gestação: {gestationPeriod} dias</p>
-      )}
-
       <h2>Gestações Ativas</h2>
       <div className="active-gestations">
-        {activeGestations.length > 0 ? (
-          activeGestations.map((gestation, index) => (
+        {gestations.length > 0 ? (
+          gestations.map((gestation, index) => (
             <div key={index} className="gestation-card">
               <p>
-                Espécies: {gestation.id_especie1} e {gestation.id_especie2}
+                <strong>Espécie:</strong>{" "}
+                {species.find((s) => s.id === gestation.id_especie)?.name || "Não informado"}
               </p>
-              <p>Recinto: {recintos.find((r) => r.id_recinto === gestation.id_recinto)?.nome || 'Não informado'}</p>
-              <p>Tempo Restante: {gestation.periodo_gestacao} dias</p>
+              <p>
+                <strong>Recinto:</strong>{" "}
+                {recintos.find((r) => r.id_recinto === gestation.id_recinto)?.nome || "Não informado"}
+              </p>
+              <p>
+                <strong>Data Início:</strong>{" "}
+                {new Date(gestation.data_inicio).toLocaleDateString()}
+              </p>
+              <p>
+                <strong>Status:</strong> {gestation.status}
+              </p>
             </div>
           ))
         ) : (
