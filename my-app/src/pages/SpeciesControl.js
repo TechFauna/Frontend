@@ -23,14 +23,11 @@ const SpeciesControl = ({ user }) => {
           .select('*, recintos(nome)')
           .eq('id_user', user.id);
 
-          if (error) {
-            console.error('Erro ao carregar espécies:', error);
-          } else if (Array.isArray(data)) {
-            setSpecies(data);
-          } else {
-            console.warn('Formato inesperado ao buscar espécies:', data);
-            setSpecies([]);
-          }
+        if (error) {
+          console.error('Erro ao carregar espécies:', error);
+        } else if (Array.isArray(data)) {
+          setSpecies(data);
+        }
       }
     };
 
@@ -88,12 +85,9 @@ const SpeciesControl = ({ user }) => {
       if (error) throw error;
 
       if (Array.isArray(data)) {
-        setSpecies((prev) => [...prev, ...data]);
-      } else {
-        console.warn('Nenhuma espécie foi adicionada:', data);
+        setSpecies((prev) => [...prev.filter((specie) => specie.id !== data[0].id), ...data]);
       }
 
-      setSpecies((prev) => [...prev, ...data]);
       setNewSpecies({ name: '', weight: '', sex: '', size: '', recinto: '' });
       alert('Espécie adicionada com sucesso!');
     } catch (error) {

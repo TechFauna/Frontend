@@ -12,22 +12,20 @@ function HomeUser({ user }) {
     const fetchUserData = async () => {
       const { data, error } = await supabase
         .from("perfil")
-        .select("nome, fotos_perfil") 
+        .select("nome, fotos_perfil")
         .eq("id_user", user.id)
         .single();
 
       if (data) {
         setUserNome(data.nome);
-        setUserFotoPerfil(
-          data.fotos_perfil || "/images/imagem_usuario_padrao.png" 
-        );
+        setUserFotoPerfil(data.fotos_perfil || "/images/imagem_usuario_padrao.png");
       } else {
         console.error("Erro ao carregar dados do usuário:", error.message);
       }
     };
 
     fetchUserData();
-  }, [user.id]);
+  }, [user.id, userNome]); // Atualiza sempre que o nome mudar
 
   return (
     <div className="home-user-container">
