@@ -10,6 +10,7 @@ import Recintos from './pages/Recintos';
 import SpeciesControl from './pages/SpeciesControl';
 import ControleReprodutivo from './pages/ControleReprodutivo';
 import RecintoView from './pages/RecintoView';
+import Perfil from './pages/PerfilPage';
 
 import Sidebar from './components/Sidebar';
 import './App.css';
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/recintos" element={<Recintos user={user} />} />
                 <Route path="/recinto-view/:id" element={<RecintoView user={user} />} />
                 <Route path="/species-control" element={<SpeciesControl user={user}/>} />
+                <Route path='/perfil' element={<Perfil user={user} />} />
                 <Route path="/controle-reprodutivo" element={<ControleReprodutivo user={user} />} />
                 <Route path="*" element={<Navigate to="/home-user" user={user}/>} />
               </>
